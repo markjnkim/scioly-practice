@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operation: Reconstruction - Practice Test 2 | Science Olympiad Division A</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eef6fb;
+    --card: #ffffff;
+    --primary: #0984e3;
+    --primary-light: #dff0ff;
+    --accent: #00b894;
+    --accent-light: #e0faf3;
+    --orange: #e17055;
+    --orange-light: #ffeee8;
+    --purple: #6c5ce7;
+    --purple-light: #ede8ff;
+    --text: #2d3436;
+    --muted: #636e72;
+    --border: #d4e4f0;
+    --success: #00b894;
+    --danger: #d63031;
+    --shadow: 0 4px 20px rgba(0,0,0,0.07);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-weight: 500;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0984e3 0%, #6c5ce7 40%, #00b894 100%);
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.04) 20px, rgba(255,255,255,0.04) 40px);
+  }
+  .hero h1 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 2.2rem;
+    color: #fff;
+    text-shadow: 2px 3px 8px rgba(0,0,0,0.2);
+    position: relative; z-index:1;
+  }
+  .hero .subtitle {
+    color: rgba(255,255,255,0.92);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: .35rem;
+    position: relative; z-index:1;
+  }
+  .badge-row {
+    display: flex; gap: .5rem; justify-content: center; margin-top: .7rem; flex-wrap: wrap; position: relative; z-index:1;
+  }
+  .badge {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(4px);
+    padding: .25rem .75rem;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 700;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+  .tab-nav {
+    display: flex; gap: .5rem; margin-bottom: 1.5rem; flex-wrap: wrap; justify-content: center;
+  }
+  .tab-btn {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: .95rem; font-weight: 600;
+    padding: .5rem 1.2rem; border-radius: 30px;
+    border: 2px solid var(--border);
+    background: var(--card); color: var(--muted);
+    cursor: pointer; transition: all .2s;
+  }
+  .tab-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 3px 12px rgba(9,132,227,0.3); }
+  .tab-panel { display: none; animation: slideIn .3s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes slideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  .card {
+    background: var(--card); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.2rem;
+    box-shadow: var(--shadow); border-top: 4px solid var(--primary);
+  }
+  .card.green { border-top-color: var(--accent); }
+  .card.orange { border-top-color: var(--orange); }
+  .card.purple { border-top-color: var(--purple); }
+  .card h2 { font-family: 'Baloo 2', sans-serif; font-size: 1.3rem; margin-bottom: .5rem; }
+  .card h3 { font-family: 'Baloo 2', sans-serif; font-size: 1.05rem; margin: .7rem 0 .3rem; }
+
+  .object-display {
+    background: #f8fbfe; border: 2px dashed var(--border); border-radius: 14px;
+    padding: 1.5rem; text-align: center; margin: 1rem 0;
+  }
+
+  .materials-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: .55rem; margin: .8rem 0;
+  }
+  .material-chip {
+    background: var(--primary-light); border-radius: 10px;
+    padding: .45rem .7rem; font-weight: 600; font-size: .85rem;
+    text-align: center; border: 1px solid rgba(9,132,227,0.12);
+  }
+  .material-chip .qty { display: block; font-size: .72rem; color: var(--muted); font-weight: 400; }
+
+  table { width:100%; border-collapse:collapse; margin:.8rem 0; font-size:.88rem; }
+  th, td { padding:.5rem .65rem; border:1px solid var(--border); text-align:left; }
+  th { background: var(--primary-light); font-family: 'Baloo 2', sans-serif; font-weight: 600; }
+  tr:nth-child(even) { background: #f7fbfe; }
+  .pts { font-weight: 700; color: var(--primary); }
+
+  .score-item {
+    display: flex; align-items: flex-start; gap: .55rem;
+    padding: .45rem 0; border-bottom: 1px solid #edf4fa;
+  }
+  .score-item:last-child { border-bottom: none; }
+  .score-item input[type="checkbox"] { width:20px; height:20px; accent-color: var(--success); margin-top:2px; flex-shrink:0; }
+  .score-item label { cursor:pointer; flex:1; }
+  .score-item .points { font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--accent); white-space:nowrap; }
+
+  .score-total {
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff; border-radius: 12px; padding: 1rem 1.2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 1rem; font-family: 'Baloo 2', sans-serif;
+  }
+  .score-total .num { font-size: 2rem; font-weight: 700; }
+
+  .tip-box {
+    background: var(--orange-light); border-radius: 12px; padding: .9rem 1.1rem;
+    margin: .7rem 0; border-left: 4px solid var(--orange);
+  }
+  .tip-box.green-tip { background: var(--accent-light); border-left-color: var(--accent); }
+  .tip-box .icon { font-size: 1.2rem; margin-right: .3rem; }
+
+  .timer-bar {
+    display: flex; align-items: center; gap: .9rem;
+    background: var(--purple-light); border-radius: 12px;
+    padding: .9rem 1.1rem; margin-bottom: 1.2rem; flex-wrap: wrap;
+  }
+  .timer-display { font-family:'Baloo 2',sans-serif; font-size:2.2rem; font-weight:700; color:var(--purple); min-width:110px; }
+  .timer-btn {
+    font-family:'Baloo 2',sans-serif; font-size:.88rem; font-weight:600;
+    padding:.4rem 1rem; border-radius:24px; border:none; cursor:pointer; transition:transform .15s;
+  }
+  .timer-btn:active { transform:scale(.95); }
+  .btn-start { background:var(--success); color:#fff; }
+  .btn-pause { background:#fdcb6e; color:#2d3436; }
+  .btn-reset { background:var(--danger); color:#fff; }
+  .timer-label { font-weight:700; color:var(--purple); font-size:.82rem; }
+
+  .step-list { counter-reset:step; list-style:none; padding:0; }
+  .step-list li {
+    counter-increment:step; position:relative;
+    padding:.55rem 0 .55rem 3rem; border-bottom:1px solid #edf4fa;
+  }
+  .step-list li::before {
+    content:counter(step); position:absolute; left:0; top:.45rem;
+    width:2rem; height:2rem; background:var(--primary); color:#fff;
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:.85rem;
+  }
+
+  .diff-badge {
+    display: inline-block; padding: .15rem .6rem; border-radius: 12px;
+    font-size: .72rem; font-weight: 700; margin-left: .4rem;
+  }
+  .diff-medium { background: #fdcb6e; color: #2d3436; }
+  .diff-hard { background: #e17055; color: #fff; }
+
+  .print-btn {
+    display:inline-flex; align-items:center; gap:.4rem;
+    font-family:'Baloo 2',sans-serif; font-size:.88rem; font-weight:600;
+    padding:.45rem 1.1rem; border-radius:24px;
+    background:var(--text); color:#fff; border:none; cursor:pointer; margin-bottom:1rem;
+  }
+  @media print {
+    .tab-nav, .timer-bar, .print-btn { display:none!important; }
+    .tab-panel { display:block!important; page-break-inside:avoid; }
+  }
+  @media (max-width:600px) {
+    .hero h1 { font-size:1.55rem; }
+    .card { padding:1rem; }
+    .timer-display { font-size:1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🤖 Operation: Reconstruction</h1>
+  <div class="subtitle">Practice Test 2 — "The Mixed-Material Robot"</div>
+  <div class="badge-row">
+    <span class="badge">Division A</span>
+    <span class="badge">Grades 4–6</span>
+    <span class="badge">25 min total</span>
+    <span class="badge">Difficulty: Medium-Hard</span>
+  </div>
+</div>
+
+<div class="container">
+  <button class="print-btn" onclick="window.print()">🖨️ Print This Test</button>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="overview">📋 Overview</button>
+    <button class="tab-btn" data-tab="writer">✍️ Writer Phase</button>
+    <button class="tab-btn" data-tab="builder">🔨 Builder Phase</button>
+    <button class="tab-btn" data-tab="scoring">⭐ Scoring</button>
+    <button class="tab-btn" data-tab="advanced">🚀 Advanced Tips</button>
+  </div>
+
+  <!-- =================== OVERVIEW =================== -->
+  <div class="tab-panel active" id="tab-overview">
+    <div class="card">
+      <h2>🤖 Why This Test Is Harder</h2>
+      <p>This practice build uses a <strong>mix of different material types</strong> (LEGO-style bricks, craft materials, and household items) which is exactly what real tournament objects look like. The tricky parts are:</p>
+      <div class="tip-box">
+        <span class="icon">⚡</span>
+        <strong>Challenge 1:</strong> Multiple colors of the same piece type — you must specify which color goes where!
+      </div>
+      <div class="tip-box green-tip">
+        <span class="icon">⚡</span>
+        <strong>Challenge 2:</strong> Some pieces are INSIDE or BEHIND other pieces — describing hidden or layered parts is tough!
+      </div>
+      <div class="tip-box">
+        <span class="icon">⚡</span>
+        <strong>Challenge 3:</strong> Left-right mirror images — make sure your Builder knows YOUR left from THEIR left!
+      </div>
+    </div>
+
+    <div class="card green">
+      <h2>📦 Materials for This Practice Build</h2>
+      <div class="materials-grid">
+        <div class="material-chip">🟥 Red Solo Cup <span class="qty">1 (+ 1 blue decoy)</span></div>
+        <div class="material-chip">🟩 Green Sponge <span class="qty">1 small square (+ 1 decoy)</span></div>
+        <div class="material-chip">📎 Pipe Cleaners <span class="qty">2 green + 1 yellow (+ 2 decoy)</span></div>
+        <div class="material-chip">🟡 Ping Pong Balls <span class="qty">2 (+ 1 decoy)</span></div>
+        <div class="material-chip">🔵 Googly Eyes <span class="qty">2 (stick-on)</span></div>
+        <div class="material-chip">🟫 Popsicle Sticks <span class="qty">4 (+ 2 decoy)</span></div>
+        <div class="material-chip">📌 Toothpicks <span class="qty">3 (+ 3 decoy)</span></div>
+        <div class="material-chip">⬜ Index Card <span class="qty">1 (folded)</span></div>
+        <div class="material-chip">🔴 Red Pom-Pom <span class="qty">1 small</span></div>
+        <div class="material-chip">🎀 Rubber Band <span class="qty">1 (+ 1 decoy)</span></div>
+      </div>
+    </div>
+
+    <div class="card purple">
+      <h2>⏱️ Division A Timing Reminder</h2>
+      <table>
+        <tr><th>Phase</th><th>Who</th><th>Time</th><th>Key Rule</th></tr>
+        <tr><td>Writing</td><td>Writer</td><td>10 min</td><td>NO drawings, NO touching the object</td></tr>
+        <tr><td>Transfer</td><td>Supervisor</td><td>~1 min</td><td>Papers collected and delivered</td></tr>
+        <tr><td>Building</td><td>Builder</td><td>10 min</td><td>NO talking to Writer, build from description only</td></tr>
+      </table>
+      <div class="tip-box green-tip" style="margin-top:.7rem">
+        <span class="icon">💡</span>
+        <strong>Analogy:</strong> This event is like being a GPS — the Writer is programming the directions, and the Builder is following them turn-by-turn. If the GPS says "turn left" when it means "turn right," the driver ends up lost!
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== WRITER PHASE =================== -->
+  <div class="tab-panel" id="tab-writer">
+    <div class="timer-bar">
+      <div>
+        <div class="timer-label">WRITER TIMER — 10:00</div>
+        <div class="timer-display" id="writerTime">10:00</div>
+      </div>
+      <button class="timer-btn btn-start" onclick="startTimer('writer')">▶ Start</button>
+      <button class="timer-btn btn-pause" onclick="pauseTimer('writer')">⏸ Pause</button>
+      <button class="timer-btn btn-reset" onclick="resetTimer('writer',600)">↺ Reset</button>
+    </div>
+
+    <div class="card">
+      <h2>👁️ The Object: "Mixed-Material Robot"</h2>
+      <p>The Writer sees this object. Study every detail — colors, positions, angles, connections!</p>
+
+      <div class="object-display">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+          <!-- FLOOR SHADOW -->
+          <ellipse cx="250" cy="465" rx="120" ry="16" fill="#d4e4f0" opacity=".4"/>
+
+          <!-- FEET: 2 popsicle sticks flat on ground -->
+          <rect x="165" y="445" width="60" height="8" rx="3" fill="#deb887" stroke="#c19a6b" stroke-width="1.5"/>
+          <text x="195" y="440" text-anchor="middle" font-size="8" fill="#888" font-family="Quicksand">Stick A (left foot)</text>
+          <rect x="275" y="445" width="60" height="8" rx="3" fill="#deb887" stroke="#c19a6b" stroke-width="1.5"/>
+          <text x="305" y="440" text-anchor="middle" font-size="8" fill="#888" font-family="Quicksand">Stick B (right foot)</text>
+
+          <!-- LEGS: 2 vertical popsicle sticks -->
+          <rect x="192" y="380" width="7" height="65" rx="2" fill="#deb887" stroke="#c19a6b" stroke-width="1.5"/>
+          <rect x="302" y="380" width="7" height="65" rx="2" fill="#deb887" stroke="#c19a6b" stroke-width="1.5"/>
+          <text x="145" y="415" font-size="8" fill="#888" font-family="Quicksand">Stick C (left leg)</text>
+          <text x="325" y="415" font-size="8" fill="#888" font-family="Quicksand">Stick D (right leg)</text>
+
+          <!-- BODY: Red solo cup upside-down -->
+          <path d="M180,380 L175,270 Q175,255 190,255 L310,255 Q325,255 325,270 L320,380 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+          <text x="250" y="325" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="Quicksand" font-weight="700">RED CUP (upside-down)</text>
+
+          <!-- RUBBER BAND around middle of cup -->
+          <ellipse cx="250" cy="315" rx="74" ry="8" fill="none" stroke="#f39c12" stroke-width="3"/>
+          <text x="340" y="312" font-size="8" fill="#f39c12" font-family="Quicksand" font-weight="600">Rubber Band</text>
+
+          <!-- BELLY: Green sponge taped to front of cup -->
+          <rect x="225" y="330" width="50" height="35" rx="5" fill="#00b894" stroke="#00a381" stroke-width="1.5"/>
+          <text x="250" y="352" text-anchor="middle" font-size="8" fill="#fff" font-weight="700" font-family="Quicksand">Sponge</text>
+
+          <!-- HEAD: Ping pong ball on top of cup -->
+          <circle cx="250" cy="235" r="28" fill="#fff9e6" stroke="#f0d78c" stroke-width="2"/>
+
+          <!-- EYES: Googly eyes -->
+          <circle cx="238" cy="228" r="9" fill="#fff" stroke="#333" stroke-width="1.5"/>
+          <circle cx="240" cy="229" r="4" fill="#333"/>
+          <circle cx="262" cy="228" r="9" fill="#fff" stroke="#333" stroke-width="1.5"/>
+          <circle cx="264" cy="229" r="4" fill="#333"/>
+          <text x="250" y="218" text-anchor="middle" font-size="8" fill="#888" font-family="Quicksand">Googly Eyes</text>
+
+          <!-- NOSE: Red pom-pom -->
+          <circle cx="250" cy="245" r="6" fill="#e74c3c"/>
+          <text x="270" y="250" font-size="7" fill="#e74c3c" font-family="Quicksand">Pom-Pom</text>
+
+          <!-- HAT: Folded index card triangle -->
+          <polygon points="250,175 225,210 275,210" fill="#f5f5f5" stroke="#aaa" stroke-width="1.5"/>
+          <text x="250" y="198" text-anchor="middle" font-size="8" fill="#888" font-family="Quicksand">Index Card Hat</text>
+
+          <!-- ANTENNA: Yellow pipe cleaner from top of hat -->
+          <path d="M250,175 C250,155 260,150 265,140 C270,130 260,125 255,130" fill="none" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="255" cy="130" r="5" fill="#f1c40f"/>
+          <text x="275" y="140" font-size="8" fill="#f1c40f" font-family="Quicksand" font-weight="600">Yellow PC (antenna)</text>
+
+          <!-- ARMS: Green pipe cleaners from sides of cup, bent at "elbow" -->
+          <!-- Left arm -->
+          <path d="M175,285 L120,285 L120,320" fill="none" stroke="#27ae60" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="95" y="310" font-size="8" fill="#27ae60" font-family="Quicksand" font-weight="600">Green PC (left arm)</text>
+
+          <!-- Right arm -->
+          <path d="M325,285 L380,285 L380,320" fill="none" stroke="#27ae60" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="385" y="310" font-size="8" fill="#27ae60" font-family="Quicksand" font-weight="600">Green PC (right arm)</text>
+
+          <!-- TOOTHPICK "buttons" on sponge -->
+          <line x1="240" y1="340" x2="240" y2="348" stroke="#8b4513" stroke-width="2"/>
+          <line x1="250" y1="340" x2="250" y2="348" stroke="#8b4513" stroke-width="2"/>
+          <line x1="260" y1="340" x2="260" y2="348" stroke="#8b4513" stroke-width="2"/>
+          <text x="250" y="375" text-anchor="middle" font-size="7" fill="#8b4513" font-family="Quicksand">3 Toothpick "buttons"</text>
+
+          <!-- Ping pong ball 2 held by left arm -->
+          <circle cx="120" cy="328" r="14" fill="#fff9e6" stroke="#f0d78c" stroke-width="1.5"/>
+          <text x="120" y="352" text-anchor="middle" font-size="7" fill="#888" font-family="Quicksand">Ball 2 (held)</text>
+
+          <text x="250" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#0984e3" font-family="Baloo 2">THE OBJECT — Writer's View</text>
+          <text x="250" y="495" text-anchor="middle" font-size="10" fill="#aaa" font-family="Quicksand">Practice Test 2 · Woodsbury 2026</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card green">
+      <h2>🔍 Assembly Guide (Coach / Supervisor Reference)</h2>
+      <ol class="step-list">
+        <li><strong>Feet:</strong> Lay 2 popsicle sticks (A &amp; B) flat and parallel on the table, about 10 cm apart, horizontal.</li>
+        <li><strong>Legs:</strong> Stand 2 popsicle sticks (C &amp; D) vertically — Stick C on center of Stick A, Stick D on center of Stick B. Secure with tape at base.</li>
+        <li><strong>Body:</strong> Place 1 red solo cup <strong>upside-down</strong> (opening facing down) on top of the two vertical leg sticks, so the sticks support it from below. <span class="diff-badge diff-medium">Tricky</span></li>
+        <li><strong>Rubber Band:</strong> Stretch 1 rubber band around the middle of the cup horizontally (like a belt).</li>
+        <li><strong>Belly Sponge:</strong> Tuck the green sponge under the rubber band on the <strong>front</strong> of the cup, lower half.</li>
+        <li><strong>Buttons:</strong> Insert 3 toothpicks vertically into the sponge in a vertical line (evenly spaced, top to bottom).</li>
+        <li><strong>Arms:</strong> Insert 1 green pipe cleaner into each side of the cup near the top. Bend each at a 90° angle downward about 5 cm out (like elbows). <span class="diff-badge diff-hard">Hard</span></li>
+        <li><strong>Left Hand:</strong> Curl the bottom of the left arm pipe cleaner around a ping pong ball (Ball 2) so the robot "holds" it.</li>
+        <li><strong>Head:</strong> Place 1 ping pong ball (Ball 1) on top of the cup (the flat bottom of the inverted cup).</li>
+        <li><strong>Eyes:</strong> Stick 2 googly eyes on the front of Ball 1, side by side, in the upper half.</li>
+        <li><strong>Nose:</strong> Glue or press the red pom-pom below the eyes on Ball 1.</li>
+        <li><strong>Hat:</strong> Fold the index card in half diagonally to make a triangle "hat." Place it on top of Ball 1. <span class="diff-badge diff-medium">Tricky</span></li>
+        <li><strong>Antenna:</strong> Insert the yellow pipe cleaner through the top point of the hat, curling the top into a small spiral/ball shape.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- =================== BUILDER PHASE =================== -->
+  <div class="tab-panel" id="tab-builder">
+    <div class="timer-bar">
+      <div>
+        <div class="timer-label">BUILDER TIMER — 10:00</div>
+        <div class="timer-display" id="builderTime">10:00</div>
+      </div>
+      <button class="timer-btn btn-start" onclick="startTimer('builder')">▶ Start</button>
+      <button class="timer-btn btn-pause" onclick="pauseTimer('builder')">⏸ Pause</button>
+      <button class="timer-btn btn-reset" onclick="resetTimer('builder',600)">↺ Reset</button>
+    </div>
+
+    <div class="card">
+      <h2>🔨 Builder's Material Tray</h2>
+      <p>You receive ALL of these items. You will NOT use all of them — the decoys are there to test your reading!</p>
+      <div class="materials-grid">
+        <div class="material-chip">🔴 Red Cup × 1<span class="qty">+ 1 blue cup (decoy!)</span></div>
+        <div class="material-chip">🟩 Sponge × 2<span class="qty">1 green + 1 yellow (decoy)</span></div>
+        <div class="material-chip">📎 Pipe Cleaners × 5<span class="qty">2 green, 1 yellow, 2 red (decoy)</span></div>
+        <div class="material-chip">⚪ Ping Pong × 3<span class="qty">Use only 2</span></div>
+        <div class="material-chip">👀 Googly Eyes × 2</div>
+        <div class="material-chip">🟫 Sticks × 6<span class="qty">Use only 4</span></div>
+        <div class="material-chip">📍 Toothpicks × 6<span class="qty">Use only 3</span></div>
+        <div class="material-chip">📄 Index Card × 1</div>
+        <div class="material-chip">🔴 Pom-Pom × 1</div>
+        <div class="material-chip">🎀 Rubber Band × 2<span class="qty">Use only 1</span></div>
+      </div>
+    </div>
+
+    <div class="card purple">
+      <h2>✅ Builder Self-Assessment</h2>
+      <div id="builderCheck">
+        <div class="score-item"><input type="checkbox" id="bc1"><label for="bc1">I read ALL instructions before building</label></div>
+        <div class="score-item"><input type="checkbox" id="bc2"><label for="bc2">I sorted my materials first</label></div>
+        <div class="score-item"><input type="checkbox" id="bc3"><label for="bc3">I used the RED cup (not the blue decoy)</label></div>
+        <div class="score-item"><input type="checkbox" id="bc4"><label for="bc4">I used GREEN pipe cleaners for arms (not red decoys)</label></div>
+        <div class="score-item"><input type="checkbox" id="bc5"><label for="bc5">I used YELLOW pipe cleaner for antenna</label></div>
+        <div class="score-item"><input type="checkbox" id="bc6"><label for="bc6">My robot has a face (eyes + nose)</label></div>
+        <div class="score-item"><input type="checkbox" id="bc7"><label for="bc7">The left arm is holding a ping pong ball</label></div>
+        <div class="score-item"><input type="checkbox" id="bc8"><label for="bc8">I used exactly 3 toothpicks as buttons (not more)</label></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== SCORING =================== -->
+  <div class="tab-panel" id="tab-scoring">
+    <div class="card">
+      <h2>⭐ Scoring Rubric — 40 Points Total</h2>
+      <p>Each item is scored for: correct <strong>piece</strong>, correct <strong>color</strong>, correct <strong>position</strong>, correct <strong>orientation</strong>, and correct <strong>connection</strong>.</p>
+    </div>
+
+    <div class="card green">
+      <h2>📊 Score Sheet — Check Each Correct Item</h2>
+      <div id="scoreSheet">
+        <div class="score-item"><input type="checkbox" id="s1" onchange="calcScore()"><label for="s1">Stick A — flat, horizontal (left foot)</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="s2" onchange="calcScore()"><label for="s2">Stick B — flat, horizontal (right foot), parallel to A</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="s3" onchange="calcScore()"><label for="s3">Stick C — vertical on Stick A (left leg)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s4" onchange="calcScore()"><label for="s4">Stick D — vertical on Stick B (right leg)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s5" onchange="calcScore()"><label for="s5">RED cup used (not blue decoy)</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="s6" onchange="calcScore()"><label for="s6">Cup is upside-down on top of legs</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s7" onchange="calcScore()"><label for="s7">Rubber band around middle of cup</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="s8" onchange="calcScore()"><label for="s8">GREEN sponge on front of cup, under rubber band</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s9" onchange="calcScore()"><label for="s9">3 toothpicks in sponge (vertical, in a line)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s10" onchange="calcScore()"><label for="s10">Toothpicks evenly spaced</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="s11" onchange="calcScore()"><label for="s11">LEFT arm: GREEN pipe cleaner, bent 90° downward</label><span class="points">3 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s12" onchange="calcScore()"><label for="s12">RIGHT arm: GREEN pipe cleaner, bent 90° downward</label><span class="points">3 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s13" onchange="calcScore()"><label for="s13">Left arm holds ping pong ball (Ball 2)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s14" onchange="calcScore()"><label for="s14">Head: Ping pong ball (Ball 1) on top of cup</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s15" onchange="calcScore()"><label for="s15">2 googly eyes on front upper half of Ball 1</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s16" onchange="calcScore()"><label for="s16">Red pom-pom below eyes (nose)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s17" onchange="calcScore()"><label for="s17">Index card folded into triangle hat on head</label><span class="points">3 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s18" onchange="calcScore()"><label for="s18">YELLOW pipe cleaner antenna from hat top, curled at top</label><span class="points">3 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s19" onchange="calcScore()"><label for="s19">Overall structural stability (stands on its own)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s20" onchange="calcScore()"><label for="s20">No incorrect decoy pieces used</label><span class="points">2 pts</span></div>
+      </div>
+
+      <div class="score-total">
+        <span>YOUR SCORE</span>
+        <span class="num" id="totalScore">0 / 40</span>
+      </div>
+    </div>
+
+    <div class="card orange">
+      <h2>🏅 Performance Levels</h2>
+      <table>
+        <tr><th>Score</th><th>Medal</th><th>Feedback</th></tr>
+        <tr><td class="pts">35–40</td><td>🥇 Gold</td><td>Competition-ready! Your Writer-Builder communication is excellent.</td></tr>
+        <tr><td class="pts">26–34</td><td>🥈 Silver</td><td>Strong performance — work on color/position precision.</td></tr>
+        <tr><td class="pts">16–25</td><td>🥉 Bronze</td><td>Solid foundation — practice describing spatial relationships.</td></tr>
+        <tr><td class="pts">0–15</td><td>📚 Practice</td><td>Review the tips tab and try the home drills. You'll improve fast!</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- =================== ADVANCED TIPS =================== -->
+  <div class="tab-panel" id="tab-advanced">
+    <div class="card">
+      <h2>🚀 Advanced Writer Techniques</h2>
+      <h3>The "3-Section Method" <span class="diff-badge diff-medium">Tournament Level</span></h3>
+      <p>Pro writers break their instructions into three clear sections. Think of it like a recipe book:</p>
+      <ol class="step-list">
+        <li><strong>SECTION 1 — Materials Inventory (1–2 min):</strong> List every piece used, including color. Example: "You will use: 1 red cup, 2 green pipe cleaners, 1 yellow pipe cleaner, 4 popsicle sticks, 1 green sponge, 3 toothpicks, 2 ping pong balls, 2 googly eyes, 1 red pom-pom, 1 index card, 1 rubber band." This tells your Builder which pieces are decoys immediately!</li>
+        <li><strong>SECTION 2 — Build Steps (6–7 min):</strong> Numbered step-by-step instructions, building from the BOTTOM UP. Each step references named pieces from Section 1.</li>
+        <li><strong>SECTION 3 — Final Check (1 min):</strong> A quick summary checklist: "When done, the robot should have: 2 feet flat on table, 2 legs, 1 upside-down red cup body, arms with elbows, a face with 2 eyes and red nose, a triangle hat with yellow curly antenna, and the left hand holding a ball."</li>
+      </ol>
+    </div>
+
+    <div class="card green">
+      <h2>🧭 The Compass System</h2>
+      <p>Before competition, agree with your partner on a direction system. The best one for elementary level:</p>
+      <table>
+        <tr><th>Term</th><th>Means</th><th>Example</th></tr>
+        <tr><td><strong>Front</strong></td><td>The side facing the Builder when they look at it straight on</td><td>"Stick the sponge on the FRONT of the cup"</td></tr>
+        <tr><td><strong>Back</strong></td><td>The side facing away from the Builder</td><td>"No pieces go on the BACK"</td></tr>
+        <tr><td><strong>Left / Right</strong></td><td>From the object's perspective (like a person facing you)</td><td>"The robot's LEFT arm (your right when facing it)"</td></tr>
+        <tr><td><strong>Top / Bottom</strong></td><td>Up = toward ceiling, Down = toward table</td><td>"Place the ball on TOP of the cup"</td></tr>
+        <tr><td><strong>Inside / Outside</strong></td><td>Inside the cup vs. outside surface</td><td>"The rubber band goes OUTSIDE the cup"</td></tr>
+      </table>
+      <div class="tip-box green-tip" style="margin-top:.7rem">
+        <span class="icon">🪞</span>
+        <strong>Mirror Trick:</strong> When the Writer writes "left arm," they should add "(your right side when facing the robot)" — this prevents the most common mistake in the event!
+      </div>
+    </div>
+
+    <div class="card purple">
+      <h2>🏠 Practice Builds to Do at Home</h2>
+      <div class="tip-box">
+        <span class="icon">🍽️</span>
+        <strong>Kitchen Robot:</strong> Stack a can on a box, add fork arms, a ball of foil for a head, and a paper hat. Practice writing + building!
+      </div>
+      <div class="tip-box green-tip">
+        <span class="icon">🧊</span>
+        <strong>Block Tower:</strong> Use 8–12 LEGO bricks in 3+ colors. Build a small sculpture. Partner writes, you build from the description.
+      </div>
+      <div class="tip-box">
+        <span class="icon">🧸</span>
+        <strong>Stuffed Animal Dress-Up:</strong> Put a hat, scarf, and sunglasses on a stuffed animal. Partner describes placement; you recreate on a different stuffed animal.
+      </div>
+      <div class="tip-box green-tip">
+        <span class="icon">📐</span>
+        <strong>Measurement Practice:</strong> Use a ruler during practice to describe exact sizes: "The straw sticks out 7 cm to the left." At the real tournament, you can estimate if rulers aren't handy.
+      </div>
+    </div>
+
+    <div class="card orange">
+      <h2>📅 Countdown to May 9th</h2>
+      <p>Here's a recommended practice schedule for the last few weeks:</p>
+      <table>
+        <tr><th>When</th><th>What to Practice</th><th>Time</th></tr>
+        <tr><td>3 weeks out</td><td>Practice Test 1 (Space Station) — full timed run</td><td>25 min</td></tr>
+        <tr><td>2 weeks out</td><td>Practice Test 2 (Robot) — full timed run + review tips</td><td>30 min</td></tr>
+        <tr><td>1 week out</td><td>Create your own object and practice with partner — switch writer/builder roles</td><td>25 min × 2</td></tr>
+        <tr><td>3 days out</td><td>Speed drill — 5-min write, 5-min build with a simple 5-piece object</td><td>15 min</td></tr>
+        <tr><td>Day before</td><td>Review vocabulary list with partner, discuss direction system</td><td>10 min</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+const timers = { writer:{remaining:600,interval:null}, builder:{remaining:600,interval:null} };
+function formatTime(s){ const m=Math.floor(s/60), sec=s%60; return m+':'+(sec<10?'0':'')+sec; }
+function startTimer(n){
+  if(timers[n].interval) return;
+  timers[n].interval = setInterval(()=>{
+    if(timers[n].remaining<=0){ clearInterval(timers[n].interval); timers[n].interval=null;
+      document.getElementById(n+'Time').textContent="⏰ TIME!";
+      document.getElementById(n+'Time').style.color='#d63031'; return; }
+    timers[n].remaining--;
+    document.getElementById(n+'Time').textContent=formatTime(timers[n].remaining);
+    if(timers[n].remaining<=60) document.getElementById(n+'Time').style.color='#d63031';
+  },1000);
+}
+function pauseTimer(n){ clearInterval(timers[n].interval); timers[n].interval=null; }
+function resetTimer(n,v){ pauseTimer(n); timers[n].remaining=v;
+  document.getElementById(n+'Time').textContent=formatTime(v);
+  document.getElementById(n+'Time').style.color=''; }
+
+const pm={s1:1,s2:1,s3:2,s4:2,s5:1,s6:2,s7:1,s8:2,s9:2,s10:1,s11:3,s12:3,s13:2,s14:2,s15:2,s16:2,s17:3,s18:3,s19:2,s20:2};
+function calcScore(){
+  let t=0;
+  for(const[id,pts] of Object.entries(pm)) if(document.getElementById(id).checked) t+=pts;
+  document.getElementById('totalScore').textContent=t+' / 40';
+}
+</script>
+</body>
+</html>

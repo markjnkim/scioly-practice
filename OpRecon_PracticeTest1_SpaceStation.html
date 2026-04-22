@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operation: Reconstruction - Practice Test 1 | Science Olympiad Division A</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf6ec;
+    --card: #ffffff;
+    --primary: #e85d26;
+    --primary-light: #fff0e8;
+    --accent: #2b7a78;
+    --accent-light: #def2f1;
+    --purple: #6c3fa0;
+    --purple-light: #f0e8ff;
+    --gold: #f0a500;
+    --gold-light: #fff8e1;
+    --text: #2d3436;
+    --muted: #636e72;
+    --border: #e0d6c8;
+    --success: #00b894;
+    --danger: #d63031;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .hero {
+    background: linear-gradient(135deg, #e85d26 0%, #f0a500 50%, #2b7a78 100%);
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero h1 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 2.2rem;
+    color: #fff;
+    text-shadow: 2px 3px 6px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 1;
+  }
+  .hero .subtitle {
+    color: rgba(255,255,255,0.92);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: .4rem;
+    position: relative; z-index:1;
+  }
+  .badge-row {
+    display: flex;
+    gap: .6rem;
+    justify-content: center;
+    margin-top: .8rem;
+    flex-wrap: wrap;
+    position: relative; z-index:1;
+  }
+  .badge {
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(4px);
+    padding: .3rem .8rem;
+    border-radius: 20px;
+    font-size: .78rem;
+    font-weight: 700;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  /* LAYOUT */
+  .container { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+  /* TABS */
+  .tab-nav {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .tab-btn {
+    font-family: 'Fredoka', sans-serif;
+    font-size: .95rem;
+    font-weight: 600;
+    padding: .55rem 1.2rem;
+    border-radius: 30px;
+    border: 2px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .25s;
+  }
+  .tab-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .tab-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 3px 12px rgba(232,93,38,0.3);
+  }
+  .tab-panel { display: none; animation: fadeUp .35s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  /* CARDS */
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.2rem;
+    box-shadow: var(--shadow);
+    border-left: 5px solid var(--primary);
+  }
+  .card.accent { border-left-color: var(--accent); }
+  .card.purple { border-left-color: var(--purple); }
+  .card.gold { border-left-color: var(--gold); }
+  .card h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.35rem;
+    margin-bottom: .6rem;
+  }
+  .card h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.1rem;
+    margin: .8rem 0 .4rem;
+  }
+
+  /* OBJECT DIAGRAM */
+  .object-display {
+    background: #fafafa;
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-align: center;
+    margin: 1rem 0;
+  }
+  .object-svg { max-width: 100%; height: auto; }
+
+  /* MATERIALS LIST */
+  .materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: .6rem;
+    margin: .8rem 0;
+  }
+  .material-chip {
+    background: var(--accent-light);
+    border-radius: 10px;
+    padding: .5rem .8rem;
+    font-weight: 600;
+    font-size: .88rem;
+    text-align: center;
+    border: 1px solid rgba(43,122,120,0.15);
+  }
+  .material-chip .qty {
+    display: block;
+    font-size: .75rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* SCORING TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: .8rem 0;
+    font-size: .9rem;
+  }
+  th, td {
+    padding: .55rem .7rem;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  th {
+    background: var(--primary-light);
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+  }
+  tr:nth-child(even) { background: #fdf9f4; }
+  .pts { font-weight: 700; color: var(--primary); }
+
+  /* CHECKBOX SCORING */
+  .score-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .6rem;
+    padding: .5rem 0;
+    border-bottom: 1px solid #f0ebe3;
+  }
+  .score-item:last-child { border-bottom: none; }
+  .score-item input[type="checkbox"] {
+    width: 20px; height: 20px;
+    accent-color: var(--success);
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .score-item label { cursor: pointer; flex: 1; }
+  .score-item .points {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  /* TOTAL */
+  .score-total {
+    background: linear-gradient(135deg, var(--accent), #3aafa9);
+    color: #fff;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    font-family: 'Fredoka', sans-serif;
+  }
+  .score-total .num { font-size: 2rem; font-weight: 700; }
+
+  /* TIPS */
+  .tip-box {
+    background: var(--gold-light);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin: .8rem 0;
+    border-left: 4px solid var(--gold);
+  }
+  .tip-box .icon { font-size: 1.3rem; margin-right: .4rem; }
+
+  /* TIMER */
+  .timer-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--purple-light);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .timer-display {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--purple);
+    min-width: 110px;
+  }
+  .timer-btn {
+    font-family: 'Fredoka', sans-serif;
+    font-size: .9rem;
+    font-weight: 600;
+    padding: .45rem 1.1rem;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+    transition: transform .15s;
+  }
+  .timer-btn:active { transform: scale(.95); }
+  .btn-start { background: var(--success); color: #fff; }
+  .btn-pause { background: var(--gold); color: #fff; }
+  .btn-reset { background: var(--danger); color: #fff; }
+  .timer-label {
+    font-weight: 700;
+    color: var(--purple);
+    font-size: .85rem;
+  }
+
+  /* STEP LIST */
+  .step-list { counter-reset: step; list-style: none; padding: 0; }
+  .step-list li {
+    counter-increment: step;
+    position: relative;
+    padding: .6rem 0 .6rem 3rem;
+    border-bottom: 1px solid #f0ebe3;
+  }
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: .5rem;
+    width: 2rem; height: 2rem;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: .85rem;
+  }
+
+  /* PRINT */
+  .print-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-family: 'Fredoka', sans-serif;
+    font-size: .9rem;
+    font-weight: 600;
+    padding: .5rem 1.2rem;
+    border-radius: 24px;
+    background: var(--text);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+  @media print {
+    .tab-nav, .timer-bar, .print-btn, .tab-btn { display: none !important; }
+    .tab-panel { display: block !important; page-break-inside: avoid; }
+    .hero { padding: 1rem; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.6rem; }
+    .card { padding: 1rem; }
+    .timer-display { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🔧 Operation: Reconstruction</h1>
+  <div class="subtitle">Practice Test 1 — "The Straw &amp; Cup Space Station"</div>
+  <div class="badge-row">
+    <span class="badge">Division A</span>
+    <span class="badge">Grades 4–6</span>
+    <span class="badge">25 min total</span>
+    <span class="badge">Woodsbury 2026</span>
+  </div>
+</div>
+
+<div class="container">
+  <button class="print-btn" onclick="window.print()">🖨️ Print This Test</button>
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="overview">📋 Overview</button>
+    <button class="tab-btn" data-tab="writer">✍️ Writer Phase</button>
+    <button class="tab-btn" data-tab="builder">🔨 Builder Phase</button>
+    <button class="tab-btn" data-tab="scoring">⭐ Scoring Rubric</button>
+    <button class="tab-btn" data-tab="tips">💡 Strategy Tips</button>
+  </div>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <div class="tab-panel active" id="tab-overview">
+    <div class="card">
+      <h2>🎯 What Is This Event?</h2>
+      <p>Think of it like a game of telephone — but instead of whispered words, you use <strong>written instructions</strong> to describe how to build something. One teammate (the <strong>Writer</strong>) sees a mystery object and writes instructions. The other teammate (the <strong>Builder</strong>) reads those instructions and tries to recreate the object without ever seeing it!</p>
+      <div class="tip-box">
+        <span class="icon">🧠</span>
+        <strong>Memory Trick:</strong> Think of this event like giving someone directions to your house. The more specific you are ("turn LEFT at the big red mailbox"), the less likely they'll get lost!
+      </div>
+    </div>
+
+    <div class="card accent">
+      <h2>📦 Materials for This Practice Build</h2>
+      <p>The following materials will be provided to the Builder. Extra pieces will be mixed in!</p>
+      <div class="materials-grid">
+        <div class="material-chip">🥤 Paper Cups <span class="qty">3 small (+ 2 decoy)</span></div>
+        <div class="material-chip">🟡 Straws <span class="qty">6 straight (+ 3 decoy)</span></div>
+        <div class="material-chip">📎 Pipe Cleaners <span class="qty">3 (+ 2 decoy)</span></div>
+        <div class="material-chip">⚪ Styrofoam Balls <span class="qty">2 small (+ 1 decoy)</span></div>
+        <div class="material-chip">📌 Push Pins <span class="qty">4 (+ 4 decoy)</span></div>
+        <div class="material-chip">🟫 Popsicle Sticks <span class="qty">4 (+ 2 decoy)</span></div>
+        <div class="material-chip">🔴 Red Marker Dot <span class="qty">Sticker × 2</span></div>
+        <div class="material-chip">🟦 Blue Marker Dot <span class="qty">Sticker × 2</span></div>
+      </div>
+    </div>
+
+    <div class="card purple">
+      <h2>⏱️ Event Timeline</h2>
+      <table>
+        <tr><th>Phase</th><th>Who</th><th>Time</th><th>What Happens</th></tr>
+        <tr><td><strong>Writing</strong></td><td>Writer only</td><td>10 min</td><td>Observe the object and write detailed building instructions</td></tr>
+        <tr><td><strong>Transfer</strong></td><td>Supervisor</td><td>~1 min</td><td>Written instructions are delivered to the Builder</td></tr>
+        <tr><td><strong>Building</strong></td><td>Builder only</td><td>10 min</td><td>Read instructions and reconstruct the object</td></tr>
+      </table>
+    </div>
+
+    <div class="card gold">
+      <h2>🚫 The Big Rules</h2>
+      <ul style="padding-left:1.2rem;">
+        <li><strong>NO drawings, diagrams, or pictures</strong> in the written description — instant Tier 2!</li>
+        <li><strong>NO talking</strong> between Writer and Builder during the event.</li>
+        <li>Writer may <strong>NOT touch</strong> the object.</li>
+        <li>Only <strong>words, numbers, single letters, abbreviations, and scientific symbols</strong> are allowed.</li>
+        <li>Builder gets <strong>extra decoy pieces</strong> mixed in — don't use them all!</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===================== WRITER PHASE ===================== -->
+  <div class="tab-panel" id="tab-writer">
+    <div class="timer-bar">
+      <div>
+        <div class="timer-label">WRITER TIMER — 10:00</div>
+        <div class="timer-display" id="writerTime">10:00</div>
+      </div>
+      <button class="timer-btn btn-start" onclick="startTimer('writer')">▶ Start</button>
+      <button class="timer-btn btn-pause" onclick="pauseTimer('writer')">⏸ Pause</button>
+      <button class="timer-btn btn-reset" onclick="resetTimer('writer', 600)">↺ Reset</button>
+    </div>
+
+    <div class="card">
+      <h2>👁️ The Object: "Straw &amp; Cup Space Station"</h2>
+      <p>Below is the object the <strong>Writer</strong> sees. Study it carefully and write instructions for the Builder. Remember: <em>NO drawings!</em></p>
+
+      <div class="object-display">
+        <svg class="object-svg" viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
+          <!-- Base: upside down cup -->
+          <ellipse cx="250" cy="340" rx="60" ry="14" fill="#e0d6c8" opacity=".5"/>
+          <rect x="200" y="260" width="100" height="80" rx="4" fill="#f5f0e8" stroke="#b0a090" stroke-width="2"/>
+          <ellipse cx="250" cy="260" rx="50" ry="12" fill="#f5f0e8" stroke="#b0a090" stroke-width="2"/>
+          <text x="250" y="310" text-anchor="middle" font-size="11" fill="#888" font-family="Nunito">CUP 1 (upside-down)</text>
+          <!-- Red dot on front of cup -->
+          <circle cx="250" cy="295" r="8" fill="#e74c3c"/>
+          <text x="250" y="298" text-anchor="middle" font-size="7" fill="#fff" font-weight="700">R</text>
+
+          <!-- Vertical straw through cup top center -->
+          <rect x="247" y="140" width="6" height="120" rx="3" fill="#f9ca24" stroke="#e6b800" stroke-width="1"/>
+          <text x="270" y="200" font-size="10" fill="#888" font-family="Nunito">Straw A (vertical)</text>
+
+          <!-- Styrofoam ball on top of vertical straw -->
+          <circle cx="250" cy="130" r="20" fill="#fff" stroke="#ccc" stroke-width="1.5"/>
+          <text x="250" y="134" text-anchor="middle" font-size="9" fill="#888" font-family="Nunito">Ball 1</text>
+
+          <!-- Blue dot on ball -->
+          <circle cx="260" cy="122" r="6" fill="#3498db"/>
+          <text x="260" y="125" text-anchor="middle" font-size="6" fill="#fff" font-weight="700">B</text>
+
+          <!-- Two horizontal straws sticking out from cup sides (antenna) -->
+          <rect x="110" y="270" width="90" height="5" rx="2" fill="#f9ca24" stroke="#e6b800" stroke-width="1"/>
+          <text x="130" y="265" font-size="9" fill="#888" font-family="Nunito">Straw B (left)</text>
+          <rect x="300" y="270" width="90" height="5" rx="2" fill="#f9ca24" stroke="#e6b800" stroke-width="1"/>
+          <text x="320" y="265" font-size="9" fill="#888" font-family="Nunito">Straw C (right)</text>
+
+          <!-- Pipe cleaner rings at end of horizontal straws -->
+          <ellipse cx="110" cy="272" rx="12" ry="16" fill="none" stroke="#e74c3c" stroke-width="3"/>
+          <text x="82" y="277" font-size="8" fill="#e74c3c" font-family="Nunito">PC-1</text>
+          <ellipse cx="390" cy="272" rx="12" ry="16" fill="none" stroke="#2980b9" stroke-width="3"/>
+          <text x="405" y="277" font-size="8" fill="#2980b9" font-family="Nunito">PC-2</text>
+
+          <!-- Popsicle stick "legs" from base of cup (2 angled) -->
+          <rect x="195" y="330" width="5" height="55" rx="2" fill="#deb887" stroke="#c19a6b" stroke-width="1" transform="rotate(-20, 197, 330)"/>
+          <rect x="300" y="330" width="5" height="55" rx="2" fill="#deb887" stroke="#c19a6b" stroke-width="1" transform="rotate(20, 302, 330)"/>
+          <text x="155" y="385" font-size="9" fill="#888" font-family="Nunito">Stick 1 (angled left)</text>
+          <text x="310" y="385" font-size="9" fill="#888" font-family="Nunito">Stick 2 (angled right)</text>
+
+          <!-- Push pins in Styrofoam ball -->
+          <line x1="250" y1="110" x2="250" y2="96" stroke="#e74c3c" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="250" cy="94" r="4" fill="#e74c3c"/>
+          <line x1="235" y1="120" x2="222" y2="114" stroke="#3498db" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="220" cy="113" r="4" fill="#3498db"/>
+
+          <text x="250" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="#e85d26" font-family="Fredoka">THE OBJECT — Writer's View</text>
+          <text x="250" y="410" text-anchor="middle" font-size="11" fill="#aaa" font-family="Nunito">Practice Test 1 · Woodsbury 2026</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card accent">
+      <h2>🔍 Object Description (for Event Supervisor / Coach)</h2>
+      <h3>Assembly Summary:</h3>
+      <ol class="step-list">
+        <li><strong>Base:</strong> 1 small paper cup turned <strong>upside-down</strong> (open end facing down) sitting on the table. Place a <strong>red dot sticker</strong> on the center of the front face of the cup.</li>
+        <li><strong>Vertical Straw:</strong> 1 yellow straw inserted vertically through the center of the cup bottom (now facing up), sticking up about 10 cm.</li>
+        <li><strong>Top Ball:</strong> 1 small Styrofoam ball pushed onto the top of the vertical straw. Place a <strong>blue dot sticker</strong> on the upper-right side of the ball.</li>
+        <li><strong>Push Pins in Ball:</strong> Insert 1 <strong>red push pin</strong> into the very top of the ball (pointing straight up). Insert 1 <strong>blue push pin</strong> into the left side of the ball (pointing left and slightly up).</li>
+        <li><strong>Side Straws (Antennae):</strong> Insert 1 straw horizontally into the <strong>left side</strong> of the cup (about 1 cm from the top/bottom of inverted cup), sticking out about 8 cm. Insert 1 straw horizontally into the <strong>right side</strong> at the same height.</li>
+        <li><strong>Pipe Cleaner Rings:</strong> Bend 1 <strong>red pipe cleaner</strong> into a small oval ring and attach it to the outer end of the LEFT straw. Bend 1 <strong>blue pipe cleaner</strong> into a small oval ring and attach it to the outer end of the RIGHT straw.</li>
+        <li><strong>Landing Legs:</strong> Tape or insert 2 popsicle sticks under the rim of the upside-down cup at an outward angle (~20°) to form landing legs — 1 on the left side and 1 on the right side.</li>
+      </ol>
+    </div>
+
+    <div class="tip-box">
+      <span class="icon">✏️</span>
+      <strong>Writer's Challenge:</strong> Write detailed step-by-step instructions for building this "Space Station" using <em>only words and numbers</em>. Be specific about colors, directions (left/right/up/down), quantities, and how pieces connect!
+    </div>
+  </div>
+
+  <!-- ===================== BUILDER PHASE ===================== -->
+  <div class="tab-panel" id="tab-builder">
+    <div class="timer-bar">
+      <div>
+        <div class="timer-label">BUILDER TIMER — 10:00</div>
+        <div class="timer-display" id="builderTime">10:00</div>
+      </div>
+      <button class="timer-btn btn-start" onclick="startTimer('builder')">▶ Start</button>
+      <button class="timer-btn btn-pause" onclick="pauseTimer('builder')">⏸ Pause</button>
+      <button class="timer-btn btn-reset" onclick="resetTimer('builder', 600)">↺ Reset</button>
+    </div>
+
+    <div class="card">
+      <h2>🔨 Builder Instructions</h2>
+      <p>You've received a written description from your Writer. Now build the object! Here's what you have in front of you:</p>
+      <div class="materials-grid">
+        <div class="material-chip">🥤 Paper Cups × 3</div>
+        <div class="material-chip">🟡 Straws × 9</div>
+        <div class="material-chip">📎 Pipe Cleaners × 5</div>
+        <div class="material-chip">⚪ Styro Balls × 3</div>
+        <div class="material-chip">📌 Push Pins × 8</div>
+        <div class="material-chip">🟫 Popsicle Sticks × 6</div>
+        <div class="material-chip">🔴 Red Dot Stickers × 2</div>
+        <div class="material-chip">🟦 Blue Dot Stickers × 2</div>
+      </div>
+    </div>
+
+    <div class="card purple">
+      <h2>📝 Builder Checklist (Self-Check After Build)</h2>
+      <p>After building, check off everything you think you got right:</p>
+      <div id="builderChecklist">
+        <div class="score-item"><input type="checkbox" id="b1"><label for="b1">Did I read the ENTIRE description before starting to build?</label></div>
+        <div class="score-item"><input type="checkbox" id="b2"><label for="b2">Did I use the correct number of each material?</label></div>
+        <div class="score-item"><input type="checkbox" id="b3"><label for="b3">Is the base cup oriented correctly (upside-down)?</label></div>
+        <div class="score-item"><input type="checkbox" id="b4"><label for="b4">Are the colors of stickers, pins, and pipe cleaners correct?</label></div>
+        <div class="score-item"><input type="checkbox" id="b5"><label for="b5">Are the stickers placed on the correct objects and positions?</label></div>
+        <div class="score-item"><input type="checkbox" id="b6"><label for="b6">Is the vertical straw in the correct position?</label></div>
+        <div class="score-item"><input type="checkbox" id="b7"><label for="b7">Are the side straws at the right height and direction?</label></div>
+        <div class="score-item"><input type="checkbox" id="b8"><label for="b8">Are the popsicle stick legs angled outward?</label></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SCORING ===================== -->
+  <div class="tab-panel" id="tab-scoring">
+    <div class="card">
+      <h2>⭐ Official Scoring Rubric</h2>
+      <p>The Event Supervisor scores each piece for: correct <strong>piece used</strong>, correct <strong>size/color</strong>, correct <strong>location</strong>, correct <strong>orientation</strong>, and correct <strong>connection</strong>. Here's the rubric for this practice build:</p>
+    </div>
+
+    <div class="card accent">
+      <h2>📊 Score Sheet — Check Each Correct Item</h2>
+      <div id="scoreSheet">
+        <div class="score-item"><input type="checkbox" id="s1" onchange="calcScore()"><label for="s1">Cup 1 used (correct piece)</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="s2" onchange="calcScore()"><label for="s2">Cup 1 is upside-down (orientation)</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="s3" onchange="calcScore()"><label for="s3">Red dot sticker on center-front of cup (location + color)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s4" onchange="calcScore()"><label for="s4">Straw A inserted vertically through cup center (piece + orientation)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s5" onchange="calcScore()"><label for="s5">Styrofoam Ball on top of Straw A (piece + location)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s6" onchange="calcScore()"><label for="s6">Blue dot sticker on upper-right of ball (location + color)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s7" onchange="calcScore()"><label for="s7">Red push pin in TOP of ball (piece + color + location)</label><span class="points">3 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s8" onchange="calcScore()"><label for="s8">Blue push pin in LEFT side of ball (piece + color + location)</label><span class="points">3 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s9" onchange="calcScore()"><label for="s9">Straw B horizontal through LEFT side of cup (piece + location)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s10" onchange="calcScore()"><label for="s10">Straw C horizontal through RIGHT side of cup (piece + location)</label><span class="points">2 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s11" onchange="calcScore()"><label for="s11">Straws B &amp; C at same height on cup</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="s12" onchange="calcScore()"><label for="s12">RED pipe cleaner ring on LEFT straw end (piece + color + location)</label><span class="points">3 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s13" onchange="calcScore()"><label for="s13">BLUE pipe cleaner ring on RIGHT straw end (piece + color + location)</label><span class="points">3 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s14" onchange="calcScore()"><label for="s14">Pipe cleaners formed into oval/ring shape</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="s15" onchange="calcScore()"><label for="s15">Popsicle Stick 1 — left side, angled outward (piece + location + orientation)</label><span class="points">3 pts</span></div>
+        <div class="score-item"><input type="checkbox" id="s16" onchange="calcScore()"><label for="s16">Popsicle Stick 2 — right side, angled outward (piece + location + orientation)</label><span class="points">3 pts</span></div>
+      </div>
+
+      <div class="score-total">
+        <span>YOUR SCORE</span>
+        <span class="num" id="totalScore">0 / 34</span>
+      </div>
+    </div>
+
+    <div class="card gold">
+      <h2>🏆 Score Ranges</h2>
+      <table>
+        <tr><th>Score</th><th>Level</th><th>What It Means</th></tr>
+        <tr><td class="pts">30–34</td><td>🥇 Gold Medal</td><td>Outstanding communication! Nearly perfect match.</td></tr>
+        <tr><td class="pts">22–29</td><td>🥈 Silver Medal</td><td>Great job! Most pieces correct with minor errors.</td></tr>
+        <tr><td class="pts">14–21</td><td>🥉 Bronze Medal</td><td>Good effort! Some key details were missed.</td></tr>
+        <tr><td class="pts">0–13</td><td>📚 Keep Practicing</td><td>Review tips and practice describing objects more precisely.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===================== STRATEGY TIPS ===================== -->
+  <div class="tab-panel" id="tab-tips">
+    <div class="card">
+      <h2>💡 Writer Super-Strategies</h2>
+      <ol class="step-list">
+        <li><strong>Inventory first!</strong> Before writing ANY instructions, count and list every single piece (type, color, size). This takes ~1 minute but saves confusion later. Think of it like a recipe — list ingredients first!</li>
+        <li><strong>Use compass directions</strong> — agree with your partner on a system: "front" = the side facing you, "left" = your left. Or use clock positions: "Place the pin at the 12 o'clock position."</li>
+        <li><strong>Build from the ground UP.</strong> Always start with the base/bottom piece first and add from there. Think of it like building a house — foundation first, roof last!</li>
+        <li><strong>Be a robot.</strong> Pretend you're programming a robot. Robots don't understand "kind of near the top" — they need "exactly 2 cm from the top edge, centered left-to-right."</li>
+        <li><strong>Name every piece!</strong> Give pieces simple names: "Cup 1," "Straw A," "Red Pin." Then use those names consistently throughout your instructions.</li>
+        <li><strong>Describe connections precisely.</strong> "Straw goes in cup" is vague. "Insert Straw A vertically through the center of the cup bottom, pushing it down about 3 cm" is clear!</li>
+      </ol>
+    </div>
+
+    <div class="card accent">
+      <h2>🔨 Builder Super-Strategies</h2>
+      <ol class="step-list">
+        <li><strong>Read the WHOLE thing first!</strong> Don't start building the moment you get the paper. Read it all the way through (takes ~1 minute). You'll understand the big picture and avoid ripping apart mistakes.</li>
+        <li><strong>Sort your materials</strong> into groups before building — put all straws together, all pins together, etc. This makes finding the right piece faster.</li>
+        <li><strong>Check off each step</strong> as you complete it. Use a pencil to put a tiny check mark next to each instruction you've finished.</li>
+        <li><strong>If something is confusing, skip it</strong> and come back. Don't waste 3 minutes on one step — build what you CAN and return to tricky parts.</li>
+      </ol>
+    </div>
+
+    <div class="card purple">
+      <h2>🤝 Team Practice Drills</h2>
+      <div class="tip-box">
+        <span class="icon">🏠</span>
+        <strong>Drill 1 — Kitchen Describe:</strong> One partner builds a small structure from household items (spoons, cups, rubber bands). The other writes instructions just by looking. Then swap!
+      </div>
+      <div class="tip-box">
+        <span class="icon">🧱</span>
+        <strong>Drill 2 — LEGO Challenge:</strong> Build a 10-15 piece LEGO structure. Practice using a grid system (row, column) to describe where each brick goes. Example: "Place the 2×4 red brick so its left corner is at position row-1, column-3 of the green baseplate."
+      </div>
+      <div class="tip-box">
+        <span class="icon">⏰</span>
+        <strong>Drill 3 — Speed Round:</strong> Set a 5-minute timer for writing. This forces you to be concise and only include the most important details. If you can nail it in 5 minutes, 10 minutes will feel like luxury!
+      </div>
+      <div class="tip-box">
+        <span class="icon">🗣️</span>
+        <strong>Drill 4 — Create Your Vocabulary:</strong> Before competition day, agree on shorthand terms with your partner. For example: "H" = horizontal, "V" = vertical, "CW" = clockwise, "⟶" = pointing right. Abbreviations ARE allowed!
+      </div>
+    </div>
+
+    <div class="card gold">
+      <h2>⚠️ Common Mistakes to Avoid</h2>
+      <table>
+        <tr><th>Mistake</th><th>Why It Hurts</th><th>Fix</th></tr>
+        <tr><td>Drawing a picture in the instructions</td><td>Instant Tier 2 — ranked BEHIND all teams that used words only</td><td>Use compass terms and measurements instead</td></tr>
+        <tr><td>Not specifying colors</td><td>Builder grabs the wrong colored piece</td><td>Always say the color: "the RED pipe cleaner"</td></tr>
+        <tr><td>Saying "put it on top"</td><td>On top of WHAT? Which part?</td><td>"Place Ball 1 on the top end of Straw A"</td></tr>
+        <tr><td>Builder starts immediately</td><td>Misunderstands the big picture</td><td>Read all instructions first, THEN build</td></tr>
+        <tr><td>No naming system</td><td>Confuses which straw is which</td><td>Label every piece: Straw A, Straw B, Cup 1, etc.</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// TAB SWITCHING
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// TIMERS
+const timers = { writer: { remaining: 600, interval: null }, builder: { remaining: 600, interval: null } };
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function startTimer(name) {
+  if (timers[name].interval) return;
+  timers[name].interval = setInterval(() => {
+    if (timers[name].remaining <= 0) {
+      clearInterval(timers[name].interval);
+      timers[name].interval = null;
+      document.getElementById(name + 'Time').textContent = "⏰ TIME!";
+      document.getElementById(name + 'Time').style.color = '#d63031';
+      return;
+    }
+    timers[name].remaining--;
+    document.getElementById(name + 'Time').textContent = formatTime(timers[name].remaining);
+    if (timers[name].remaining <= 60) {
+      document.getElementById(name + 'Time').style.color = '#d63031';
+    }
+  }, 1000);
+}
+
+function pauseTimer(name) {
+  clearInterval(timers[name].interval);
+  timers[name].interval = null;
+}
+
+function resetTimer(name, val) {
+  pauseTimer(name);
+  timers[name].remaining = val;
+  document.getElementById(name + 'Time').textContent = formatTime(val);
+  document.getElementById(name + 'Time').style.color = '';
+}
+
+// SCORE CALC
+const pointMap = {s1:1,s2:1,s3:2,s4:2,s5:2,s6:2,s7:3,s8:3,s9:2,s10:2,s11:1,s12:3,s13:3,s14:1,s15:3,s16:3};
+function calcScore() {
+  let total = 0;
+  for (const [id, pts] of Object.entries(pointMap)) {
+    if (document.getElementById(id).checked) total += pts;
+  }
+  document.getElementById('totalScore').textContent = total + ' / 34';
+}
+</script>
+</body>
+</html>
