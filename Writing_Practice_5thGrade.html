@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5th Grade Writing Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf0f8;
+    --card: #ffffff;
+    --primary: #c2185b;
+    --primary-light: #fce4ec;
+    --accent: #7b1fa2;
+    --accent-light: #f3e5f5;
+    --teal: #00897b;
+    --teal-light: #e0f2f1;
+    --gold: #f57f17;
+    --gold-light: #fff8e1;
+    --text: #2d3436;
+    --muted: #636e72;
+    --border: #f8bbd0;
+    --success: #2e7d32;
+    --danger: #c62828;
+    --shadow: 0 4px 22px rgba(194,24,91,0.08);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); line-height:1.65; font-weight:500; }
+
+  .hero {
+    background: linear-gradient(135deg, #c2185b 0%, #7b1fa2 60%, #3949ab 100%);
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content:''; position:absolute; top:0; left:0; right:0; bottom:0;
+    background: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero h1 { font-family:'Fredoka',sans-serif; font-size:2.2rem; color:#fff; text-shadow:2px 3px 8px rgba(0,0,0,0.2); position:relative; z-index:1; }
+  .hero .subtitle { color:rgba(255,255,255,0.92); font-size:1.05rem; font-weight:600; margin-top:.35rem; position:relative; z-index:1; }
+  .badge-row { display:flex; gap:.5rem; justify-content:center; margin-top:.7rem; flex-wrap:wrap; position:relative; z-index:1; }
+  .badge { background:rgba(255,255,255,0.2); backdrop-filter:blur(4px); padding:.25rem .75rem; border-radius:20px; font-size:.78rem; font-weight:700; color:#fff; border:1px solid rgba(255,255,255,0.3); }
+
+  .container { max-width:900px; margin:0 auto; padding:1.5rem 1rem; }
+
+  .tab-nav { display:flex; gap:.5rem; margin-bottom:1.5rem; flex-wrap:wrap; justify-content:center; }
+  .tab-btn { font-family:'Fredoka',sans-serif; font-size:.95rem; font-weight:600; padding:.5rem 1.2rem; border-radius:30px; border:2px solid var(--border); background:var(--card); color:var(--muted); cursor:pointer; transition:all .2s; }
+  .tab-btn:hover { border-color:var(--primary); color:var(--primary); }
+  .tab-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); box-shadow:0 3px 12px rgba(194,24,91,0.3); }
+  .tab-panel { display:none; animation:fadeUp .35s ease; }
+  .tab-panel.active { display:block; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  .card { background:var(--card); border-radius:16px; padding:1.5rem; margin-bottom:1.2rem; box-shadow:var(--shadow); border-left:5px solid var(--primary); }
+  .card.accent { border-left-color:var(--accent); }
+  .card.teal { border-left-color:var(--teal); }
+  .card.gold { border-left-color:var(--gold); }
+  .card h2 { font-family:'Fredoka',sans-serif; font-size:1.35rem; margin-bottom:.6rem; }
+  .card h3 { font-family:'Fredoka',sans-serif; font-size:1.1rem; margin:.8rem 0 .4rem; }
+
+  /* TIMER */
+  .timer-bar { display:flex; align-items:center; gap:1rem; background:var(--accent-light); border-radius:12px; padding:1rem 1.2rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+  .timer-display { font-family:'Fredoka',sans-serif; font-size:2.2rem; font-weight:700; color:var(--accent); min-width:120px; }
+  .timer-btn { font-family:'Fredoka',sans-serif; font-size:.9rem; font-weight:600; padding:.45rem 1.1rem; border-radius:24px; border:none; cursor:pointer; transition:transform .15s; }
+  .timer-btn:active { transform:scale(.95); }
+  .btn-start { background:#2e7d32; color:#fff; }
+  .btn-pause { background:var(--gold); color:#fff; }
+  .btn-reset { background:#c62828; color:#fff; }
+  .timer-label { font-weight:700; color:var(--accent); font-size:.85rem; }
+
+  /* WRITING PROMPT */
+  .prompt-box { background:linear-gradient(135deg,var(--primary-light),var(--accent-light)); border-radius:16px; padding:1.5rem; margin:1rem 0; border:2px solid var(--border); }
+  .prompt-box .prompt-text { font-size:1.15rem; font-weight:700; color:var(--accent); line-height:1.5; margin-bottom:.8rem; }
+  .prompt-box .prompt-hint { font-size:.88rem; color:var(--muted); }
+
+  /* WRITING LINES */
+  .writing-area { margin:1rem 0; }
+  .writing-line { border-bottom:1.5px solid #e8c4d8; height:36px; margin-bottom:2px; }
+
+  /* SCORE ITEMS */
+  .score-item { display:flex; align-items:flex-start; gap:.6rem; padding:.5rem 0; border-bottom:1px solid #fce4ec; }
+  .score-item:last-child { border-bottom:none; }
+  .score-item input[type="checkbox"] { width:20px; height:20px; accent-color:var(--teal); margin-top:2px; flex-shrink:0; }
+  .score-item label { cursor:pointer; flex:1; }
+  .score-item .points { font-family:'Fredoka',sans-serif; font-weight:700; color:var(--accent); white-space:nowrap; }
+
+  .trait-section { margin-bottom:1rem; }
+  .trait-header { font-family:'Fredoka',sans-serif; font-size:1.05rem; font-weight:600; color:var(--primary); padding:.4rem 0; border-bottom:2px solid var(--border); margin-bottom:.4rem; }
+
+  .score-total { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; border-radius:12px; padding:1rem 1.2rem; display:flex; justify-content:space-between; align-items:center; margin-top:1rem; font-family:'Fredoka',sans-serif; }
+  .score-total .num { font-size:2rem; font-weight:700; }
+
+  table { width:100%; border-collapse:collapse; margin:.8rem 0; font-size:.88rem; }
+  th, td { padding:.5rem .65rem; border:1px solid var(--border); text-align:left; }
+  th { background:var(--primary-light); font-family:'Fredoka',sans-serif; font-weight:600; }
+  tr:nth-child(even) { background:#fdf7fb; }
+  .pts { font-weight:700; color:var(--primary); }
+
+  .tip-box { background:var(--gold-light); border-radius:12px; padding:.9rem 1.1rem; margin:.7rem 0; border-left:4px solid var(--gold); }
+  .tip-box.teal { background:var(--teal-light); border-left-color:var(--teal); }
+  .tip-box .icon { font-size:1.2rem; margin-right:.3rem; }
+
+  .step-list { counter-reset:step; list-style:none; padding:0; }
+  .step-list li { counter-increment:step; position:relative; padding:.55rem 0 .55rem 3rem; border-bottom:1px solid #fce4ec; }
+  .step-list li::before { content:counter(step); position:absolute; left:0; top:.45rem; width:2rem; height:2rem; background:var(--primary); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fredoka',sans-serif; font-weight:700; font-size:.85rem; }
+
+  .sample-placeholder { background:var(--teal-light); border:2px dashed var(--teal); border-radius:14px; padding:1.5rem; text-align:center; color:var(--teal); font-weight:700; margin:1rem 0; }
+
+  .print-btn { display:inline-flex; align-items:center; gap:.4rem; font-family:'Fredoka',sans-serif; font-size:.88rem; font-weight:600; padding:.45rem 1.1rem; border-radius:24px; background:var(--text); color:#fff; border:none; cursor:pointer; margin-bottom:1rem; }
+
+  @media print {
+    .tab-nav, .timer-bar, .print-btn { display:none!important; }
+    .tab-panel { display:block!important; page-break-inside:avoid; }
+    .writing-line { border-bottom:1px solid #ccc; }
+  }
+  @media (max-width:600px) {
+    .hero h1 { font-size:1.6rem; }
+    .card { padding:1rem; }
+    .timer-display { font-size:1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>✍️ 5th Grade Writing Practice</h1>
+  <div class="subtitle">Timed Opinion Essay · 6-Trait Scoring Rubric</div>
+  <div class="badge-row">
+    <span class="badge">Grade 5</span>
+    <span class="badge">30-Min Timer</span>
+    <span class="badge">24 Points</span>
+    <span class="badge">Woodsbury 2026</span>
+  </div>
+</div>
+
+<div class="container">
+  <button class="print-btn" onclick="window.print()">🖨️ Print This Test</button>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="overview">📋 Overview</button>
+    <button class="tab-btn" data-tab="prompt">✏️ Write</button>
+    <button class="tab-btn" data-tab="rubric">⭐ Score It</button>
+    <button class="tab-btn" data-tab="samples">📄 Sample Writing</button>
+    <button class="tab-btn" data-tab="tips">💡 Writing Tips</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="tab-panel active" id="tab-overview">
+    <div class="card">
+      <h2>✍️ What Is This Practice?</h2>
+      <p>You'll write a short <strong>opinion essay</strong> in 30 minutes. An opinion essay takes a clear position and supports it with reasons and details. After writing, use the scoring rubric to check your work!</p>
+      <div class="tip-box">
+        <span class="icon">💡</span>
+        <strong>Tip:</strong> Spend the first 5 minutes planning (brainstorm + outline), 20 minutes writing, and the last 5 minutes reviewing and fixing any mistakes.
+      </div>
+    </div>
+    <div class="card accent">
+      <h2>📊 The 6 Writing Traits</h2>
+      <table>
+        <tr><th>Trait</th><th>What It Measures</th><th>Points</th></tr>
+        <tr><td><strong>Ideas &amp; Content</strong></td><td>Clear position, relevant supporting details</td><td class="pts">4 pts</td></tr>
+        <tr><td><strong>Organization</strong></td><td>Strong intro, body paragraphs, conclusion</td><td class="pts">4 pts</td></tr>
+        <tr><td><strong>Voice</strong></td><td>Confident, engaged, sounds like YOU</td><td class="pts">4 pts</td></tr>
+        <tr><td><strong>Word Choice</strong></td><td>Precise, vivid, specific words</td><td class="pts">4 pts</td></tr>
+        <tr><td><strong>Sentence Fluency</strong></td><td>Varied sentence length and structure</td><td class="pts">4 pts</td></tr>
+        <tr><td><strong>Conventions</strong></td><td>Spelling, grammar, punctuation</td><td class="pts">4 pts</td></tr>
+        <tr><th colspan="2">Total</th><td class="pts">24 pts</td></tr>
+      </table>
+    </div>
+    <div class="card gold">
+      <h2>🏅 Score Guide</h2>
+      <table>
+        <tr><th>Score</th><th>Level</th><th>What It Means</th></tr>
+        <tr><td class="pts">21–24</td><td>🥇 Gold</td><td>Strong writer! Clear, organized, and engaging.</td></tr>
+        <tr><td class="pts">16–20</td><td>🥈 Silver</td><td>Good writing — work on the traits with lower scores.</td></tr>
+        <tr><td class="pts">10–15</td><td>🥉 Bronze</td><td>Developing writer — keep practicing the basics.</td></tr>
+        <tr><td class="pts">0–9</td><td>📚 Keep Going</td><td>Review the Tips tab and try a new draft!</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- WRITE TAB -->
+  <div class="tab-panel" id="tab-prompt">
+    <div class="timer-bar">
+      <div>
+        <div class="timer-label">WRITING TIMER — 30:00</div>
+        <div class="timer-display" id="writerTime">30:00</div>
+      </div>
+      <button class="timer-btn btn-start" onclick="startTimer()">▶ Start</button>
+      <button class="timer-btn btn-pause" onclick="pauseTimer()">⏸ Pause</button>
+      <button class="timer-btn btn-reset" onclick="resetTimer()">↺ Reset</button>
+    </div>
+
+    <div class="card">
+      <h2>📝 Today's Writing Prompt</h2>
+      <div class="prompt-box">
+        <div class="prompt-text">Should students have homework every night? Write a persuasive essay clearly stating your opinion. Support your position with at least two strong reasons and specific details or examples.</div>
+        <div class="prompt-hint">Remember: State your opinion in the first paragraph, support it in the middle, and wrap it up at the end. Use transition words like <em>first, additionally, finally, in conclusion.</em></div>
+      </div>
+      <div class="tip-box teal">
+        <span class="icon">📋</span>
+        <strong>Before you write</strong> (5 min): Jot down your opinion, your 2–3 best reasons, and one specific detail or example for each reason.
+      </div>
+    </div>
+
+    <div class="card teal">
+      <h2>🗒️ Planning Box</h2>
+      <p style="font-size:.88rem;color:var(--muted);margin-bottom:.8rem">Use this space to plan before you write. Not scored — just for thinking!</p>
+      <div class="writing-area">
+        <div style="font-size:.85rem;font-weight:700;color:var(--teal);margin-bottom:.4rem">My opinion:</div>
+        <div class="writing-line"></div>
+        <div class="writing-line"></div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--teal);margin:.6rem 0 .4rem">Reason 1 + detail:</div>
+        <div class="writing-line"></div>
+        <div class="writing-line"></div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--teal);margin:.6rem 0 .4rem">Reason 2 + detail:</div>
+        <div class="writing-line"></div>
+        <div class="writing-line"></div>
+        <div style="font-size:.85rem;font-weight:700;color:var(--teal);margin:.6rem 0 .4rem">Reason 3 (if you have one):</div>
+        <div class="writing-line"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📄 My Essay</h2>
+      <p style="font-size:.88rem;color:var(--muted);margin-bottom:.8rem">Write your full essay below. Use the lines — one idea per line is fine. Aim for 3–5 paragraphs.</p>
+      <div class="writing-area">
+        <!-- 30 writing lines -->
+        <div class="writing-line"></div><div class="writing-line"></div><div class="writing-line"></div>
+        <div class="writing-line"></div><div class="writing-line"></div><div class="writing-line"></div>
+        <div class="writing-line"></div><div class="writing-line"></div><div class="writing-line"></div>
+        <div class="writing-line"></div><div class="writing-line"></div><div class="writing-line"></div>
+        <div class="writing-line"></div><div class="writing-line"></div><div class="writing-line"></div>
+        <div class="writing-line"></div><div class="writing-line"></div><div class="writing-line"></div>
+        <div class="writing-line"></div><div class="writing-line"></div><div class="writing-line"></div>
+        <div class="writing-line"></div><div class="writing-line"></div><div class="writing-line"></div>
+        <div class="writing-line"></div><div class="writing-line"></div><div class="writing-line"></div>
+        <div class="writing-line"></div><div class="writing-line"></div><div class="writing-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RUBRIC TAB -->
+  <div class="tab-panel" id="tab-rubric">
+    <div class="card">
+      <h2>⭐ Score Your Essay</h2>
+      <p>Read each description and check the box that best matches your writing. Each trait is worth 1–4 points.</p>
+    </div>
+
+    <div class="card accent">
+      <div class="trait-section">
+        <div class="trait-header">✏️ Trait 1: Ideas &amp; Content</div>
+        <div class="score-item"><input type="checkbox" id="t1a" onchange="calcScore()"><label for="t1a">I stated a clear opinion in my first paragraph</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t1b" onchange="calcScore()"><label for="t1b">I gave at least two different reasons to support my opinion</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t1c" onchange="calcScore()"><label for="t1c">I used specific details or examples (not just "because it's good/bad")</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t1d" onchange="calcScore()"><label for="t1d">My details connect directly to my opinion and reasons</label><span class="points">1 pt</span></div>
+      </div>
+    </div>
+
+    <div class="card teal">
+      <div class="trait-section">
+        <div class="trait-header" style="color:var(--teal);border-bottom-color:var(--teal-light)">🗂️ Trait 2: Organization</div>
+        <div class="score-item"><input type="checkbox" id="t2a" onchange="calcScore()"><label for="t2a">My essay has a clear introduction that states my opinion</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t2b" onchange="calcScore()"><label for="t2b">My body paragraphs each focus on one reason</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t2c" onchange="calcScore()"><label for="t2c">I used transition words (first, next, also, finally, in conclusion)</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t2d" onchange="calcScore()"><label for="t2d">My conclusion wraps up my argument (not just "so that's why...")</label><span class="points">1 pt</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="trait-section">
+        <div class="trait-header">🎤 Trait 3: Voice</div>
+        <div class="score-item"><input type="checkbox" id="t3a" onchange="calcScore()"><label for="t3a">My writing sounds like a person who really cares about this topic</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t3b" onchange="calcScore()"><label for="t3b">I sound confident in my opinion — not wishy-washy</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t3c" onchange="calcScore()"><label for="t3c">I avoided writing like a robot ("The answer is homework is bad.")</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t3d" onchange="calcScore()"><label for="t3d">A reader would feel persuaded or at least understand my point of view</label><span class="points">1 pt</span></div>
+      </div>
+    </div>
+
+    <div class="card gold">
+      <div class="trait-section">
+        <div class="trait-header" style="color:var(--gold);border-bottom-color:var(--gold-light)">💬 Trait 4: Word Choice</div>
+        <div class="score-item"><input type="checkbox" id="t4a" onchange="calcScore()"><label for="t4a">I used specific, precise words instead of vague ones ("exhausted" not just "tired")</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t4b" onchange="calcScore()"><label for="t4b">I avoided repeating the same words too many times</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t4c" onchange="calcScore()"><label for="t4c">I used some strong opinion words (crucial, beneficial, unfair, essential)</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t4d" onchange="calcScore()"><label for="t4d">My words help the reader picture or understand my point better</label><span class="points">1 pt</span></div>
+      </div>
+    </div>
+
+    <div class="card accent">
+      <div class="trait-section">
+        <div class="trait-header">〰️ Trait 5: Sentence Fluency</div>
+        <div class="score-item"><input type="checkbox" id="t5a" onchange="calcScore()"><label for="t5a">My sentences are different lengths — not all short, not all super long</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t5b" onchange="calcScore()"><label for="t5b">I started sentences in different ways (not every sentence begins with "I")</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t5c" onchange="calcScore()"><label for="t5c">If I read my essay aloud, it flows naturally without awkward pauses</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t5d" onchange="calcScore()"><label for="t5d">I avoided run-on sentences and choppy, disconnected sentences</label><span class="points">1 pt</span></div>
+      </div>
+    </div>
+
+    <div class="card teal">
+      <div class="trait-section">
+        <div class="trait-header" style="color:var(--teal);border-bottom-color:var(--teal-light)">🔤 Trait 6: Conventions</div>
+        <div class="score-item"><input type="checkbox" id="t6a" onchange="calcScore()"><label for="t6a">Most words are spelled correctly</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t6b" onchange="calcScore()"><label for="t6b">Every sentence starts with a capital letter and ends with proper punctuation</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t6c" onchange="calcScore()"><label for="t6c">I used commas correctly (in lists, after transitions, etc.)</label><span class="points">1 pt</span></div>
+        <div class="score-item"><input type="checkbox" id="t6d" onchange="calcScore()"><label for="t6d">Paragraphs are indented and my handwriting/printing is readable</label><span class="points">1 pt</span></div>
+      </div>
+    </div>
+
+    <div class="score-total">
+      <span>YOUR WRITING SCORE</span>
+      <span class="num" id="totalScore">0 / 24</span>
+    </div>
+  </div>
+
+  <!-- SAMPLE WRITING TAB -->
+  <div class="tab-panel" id="tab-samples">
+    <div class="card">
+      <h2>📄 Writing Samples</h2>
+      <p>This section is reserved for student writing samples that show different score levels. Samples will be added here to illustrate what a strong essay looks like compared to one that needs more work.</p>
+    </div>
+
+    <!-- PASTE WRITING SAMPLES BELOW THIS LINE -->
+    <div id="writing-sample-slot">
+      <div class="sample-placeholder">
+        ✏️ Writing samples will be added here.<br>
+        <span style="font-weight:400;font-size:.9rem">Each sample will include the essay and its rubric scores so you can see what great writing looks like!</span>
+      </div>
+    </div>
+    <!-- END WRITING SAMPLES SECTION -->
+
+    <div class="card gold">
+      <h2>📊 Score Level Examples</h2>
+      <table>
+        <tr><th>Score (per trait)</th><th>What It Looks Like</th></tr>
+        <tr><td class="pts">4 — Excellent</td><td>The writing clearly does everything in that trait. A reader notices and appreciates it.</td></tr>
+        <tr><td class="pts">3 — Proficient</td><td>The trait is mostly there. Maybe one small thing could be stronger.</td></tr>
+        <tr><td class="pts">2 — Developing</td><td>You can see the attempt, but it needs more work. The reader feels something is missing.</td></tr>
+        <tr><td class="pts">1 — Beginning</td><td>The trait is barely present. This is an area to focus on in the next draft.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- TIPS TAB -->
+  <div class="tab-panel" id="tab-tips">
+    <div class="card">
+      <h2>💡 Before You Write: Planning</h2>
+      <ol class="step-list">
+        <li><strong>Pick your side clearly.</strong> Don't try to argue both sides. Choose one position and commit to it — even if you secretly see both sides in real life.</li>
+        <li><strong>Brainstorm 3 reasons.</strong> Write down 3 reasons you support your position. Then pick the 2 strongest for your essay (or all 3 if time allows).</li>
+        <li><strong>Think of a specific example</strong> for each reason. "Studies show..." or "For example, when I..." are great ways to add evidence.</li>
+        <li><strong>Write a quick outline</strong> before starting: Intro → Reason 1 + detail → Reason 2 + detail → Conclusion. Even 2 minutes of planning saves 10 minutes of confusion.</li>
+      </ol>
+    </div>
+    <div class="card accent">
+      <h2>✏️ While You Write</h2>
+      <ol class="step-list">
+        <li><strong>Start strong.</strong> Your first sentence should grab attention. Try a question ("Have you ever stayed up until midnight doing homework?") or a bold statement.</li>
+        <li><strong>State your opinion in sentence 2 or 3.</strong> Don't make the reader guess what side you're on. Be direct: "I strongly believe that students should not have homework every night because..."</li>
+        <li><strong>Use transition words</strong> between paragraphs: "First," "Another important reason," "Additionally," "Most importantly," "In conclusion."</li>
+        <li><strong>End with power.</strong> Your last sentence should leave the reader thinking. Restate your opinion in a new way — don't just copy your introduction.</li>
+      </ol>
+    </div>
+    <div class="card teal">
+      <h2>🔍 After You Write: Revision Checklist</h2>
+      <div class="tip-box teal"><span class="icon">✅</span><strong>Read it aloud.</strong> Your ear catches mistakes your eyes miss. If you stumble reading it, fix that sentence.</div>
+      <div class="tip-box"><span class="icon">✅</span><strong>Check your opening.</strong> Does your first paragraph clearly state your opinion? If not, add or strengthen that sentence.</div>
+      <div class="tip-box teal"><span class="icon">✅</span><strong>Check your ending.</strong> Does your conclusion do more than repeat your intro? Add a "so what?" — why does this matter?</div>
+      <div class="tip-box"><span class="icon">✅</span><strong>Hunt for boring words.</strong> Circle every "good," "bad," "nice," "thing," and "stuff." Replace each one with a more specific word.</div>
+      <div class="tip-box teal"><span class="icon">✅</span><strong>Sentence variety check.</strong> Circle the first word of every sentence. If more than 3 in a row start the same way, change some up.</div>
+    </div>
+    <div class="card gold">
+      <h2>⚠️ Common Mistakes to Avoid</h2>
+      <table>
+        <tr><th>Mistake</th><th>Fix</th></tr>
+        <tr><td>Writing "I think that I think that..."</td><td>State your opinion once, clearly, then move on to reasons</td></tr>
+        <tr><td>Starting every sentence with "I"</td><td>Try "Studies show...", "Many students...", "One example is..."</td></tr>
+        <tr><td>Saying "because it's fun/boring/good/bad"</td><td>Give a SPECIFIC reason: "because homework takes time away from sports, family, and sleep"</td></tr>
+        <tr><td>Forgetting a conclusion</td><td>Always end with a paragraph that wraps up — even 2–3 sentences</td></tr>
+        <tr><td>Run-on sentences</td><td>If a sentence has 3 "ands," break it into two sentences</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const timer = { remaining: 1800, interval: null };
+
+function formatTime(s) {
+  const m = Math.floor(s / 60), sec = s % 60;
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+function startTimer() {
+  if (timer.interval) return;
+  timer.interval = setInterval(() => {
+    if (timer.remaining <= 0) {
+      clearInterval(timer.interval); timer.interval = null;
+      document.getElementById('writerTime').textContent = '⏰ TIME!';
+      document.getElementById('writerTime').style.color = '#c62828';
+      return;
+    }
+    timer.remaining--;
+    document.getElementById('writerTime').textContent = formatTime(timer.remaining);
+    if (timer.remaining <= 120) document.getElementById('writerTime').style.color = '#c62828';
+  }, 1000);
+}
+function pauseTimer() { clearInterval(timer.interval); timer.interval = null; }
+function resetTimer() {
+  pauseTimer();
+  timer.remaining = 1800;
+  document.getElementById('writerTime').textContent = '30:00';
+  document.getElementById('writerTime').style.color = '';
+}
+
+const pointMap = {
+  t1a:1,t1b:1,t1c:1,t1d:1,
+  t2a:1,t2b:1,t2c:1,t2d:1,
+  t3a:1,t3b:1,t3c:1,t3d:1,
+  t4a:1,t4b:1,t4c:1,t4d:1,
+  t5a:1,t5b:1,t5c:1,t5d:1,
+  t6a:1,t6b:1,t6c:1,t6d:1
+};
+function calcScore() {
+  let total = 0;
+  for (const [id, pts] of Object.entries(pointMap)) {
+    if (document.getElementById(id).checked) total += pts;
+  }
+  document.getElementById('totalScore').textContent = total + ' / 24';
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

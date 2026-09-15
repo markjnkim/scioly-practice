@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5th Grade Math Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --card: #ffffff;
+    --primary: #5c6bc0;
+    --primary-light: #e8eaf6;
+    --accent: #43a047;
+    --accent-light: #e8f5e9;
+    --orange: #fb8c00;
+    --orange-light: #fff3e0;
+    --purple: #8e24aa;
+    --purple-light: #f3e5f5;
+    --text: #2d3436;
+    --muted: #636e72;
+    --border: #c5cae9;
+    --success: #43a047;
+    --danger: #e53935;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); line-height:1.65; font-weight:500; }
+
+  .hero {
+    background: linear-gradient(135deg, #5c6bc0 0%, #43a047 100%);
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; inset:0;
+    background: repeating-linear-gradient(60deg, transparent, transparent 18px, rgba(255,255,255,0.04) 18px, rgba(255,255,255,0.04) 36px);
+  }
+  .hero h1 { font-family:'Poppins',sans-serif; font-size:2.2rem; color:#fff; text-shadow:2px 3px 8px rgba(0,0,0,0.2); position:relative; z-index:1; }
+  .hero .subtitle { color:rgba(255,255,255,0.92); font-size:1.05rem; font-weight:600; margin-top:.35rem; position:relative; z-index:1; }
+  .badge-row { display:flex; gap:.5rem; justify-content:center; margin-top:.7rem; flex-wrap:wrap; position:relative; z-index:1; }
+  .badge { background:rgba(255,255,255,0.2); backdrop-filter:blur(4px); padding:.25rem .75rem; border-radius:20px; font-size:.78rem; font-weight:700; color:#fff; border:1px solid rgba(255,255,255,0.3); }
+
+  .container { max-width:900px; margin:0 auto; padding:1.5rem 1rem; }
+
+  .tab-nav { display:flex; gap:.5rem; margin-bottom:1.5rem; flex-wrap:wrap; justify-content:center; }
+  .tab-btn { font-family:'Poppins',sans-serif; font-size:.92rem; font-weight:600; padding:.5rem 1.2rem; border-radius:30px; border:2px solid var(--border); background:var(--card); color:var(--muted); cursor:pointer; transition:all .2s; }
+  .tab-btn:hover { border-color:var(--primary); color:var(--primary); }
+  .tab-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); box-shadow:0 3px 12px rgba(92,107,192,0.35); }
+  .tab-panel { display:none; animation:fadeUp .3s ease; }
+  .tab-panel.active { display:block; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  .card { background:var(--card); border-radius:16px; padding:1.5rem; margin-bottom:1.2rem; box-shadow:var(--shadow); border-top:4px solid var(--primary); }
+  .card.green { border-top-color:var(--accent); }
+  .card.orange { border-top-color:var(--orange); }
+  .card.purple { border-top-color:var(--purple); }
+  .card h2 { font-family:'Poppins',sans-serif; font-size:1.3rem; margin-bottom:.5rem; }
+  .card h3 { font-family:'Poppins',sans-serif; font-size:1.05rem; margin:.8rem 0 .4rem; color:var(--primary); }
+
+  .question-block { background:#f7f9ff; border:2px solid var(--border); border-radius:14px; padding:1.1rem 1.2rem; margin-bottom:1rem; transition:border-color .2s; }
+  .question-block.correct { border-color:var(--success); background:#f0faf0; }
+  .question-block.incorrect { border-color:var(--danger); background:#fff5f5; }
+  .q-text { font-weight:700; margin-bottom:.75rem; font-size:1rem; }
+  .q-section-label { display:inline-block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:.2rem .6rem; border-radius:10px; margin-bottom:.5rem; }
+  .label-a { background:var(--primary-light); color:var(--primary); }
+  .label-b { background:var(--accent-light); color:var(--accent); }
+  .label-c { background:var(--orange-light); color:var(--orange); }
+  .label-d { background:var(--purple-light); color:var(--purple); }
+  .options { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; }
+  .opt-btn { font-family:'Nunito',sans-serif; font-size:.9rem; font-weight:600; padding:.55rem .9rem; border-radius:10px; border:2px solid var(--border); background:#fff; color:var(--text); cursor:pointer; text-align:left; transition:all .18s; display:flex; align-items:center; gap:.5rem; }
+  .opt-btn:hover:not(:disabled) { border-color:var(--primary); background:var(--primary-light); }
+  .opt-btn.selected-correct { border-color:var(--success); background:#e8f5e9; color:#2e7d32; }
+  .opt-btn.selected-wrong { border-color:var(--danger); background:#ffebee; color:#c62828; }
+  .opt-btn.reveal-correct { border-color:var(--success); background:#e8f5e9; color:#2e7d32; }
+  .opt-btn:disabled { cursor:default; }
+  .opt-letter { font-family:'Poppins',sans-serif; font-weight:700; width:22px; height:22px; border-radius:50%; background:var(--border); display:flex; align-items:center; justify-content:center; font-size:.75rem; flex-shrink:0; }
+  .feedback { font-size:.85rem; font-weight:700; margin-top:.55rem; padding:.35rem .7rem; border-radius:8px; display:none; }
+  .feedback.show { display:block; }
+  .feedback.correct { background:#e8f5e9; color:#2e7d32; }
+  .feedback.wrong { background:#ffebee; color:#c62828; }
+
+  .section-header { display:flex; align-items:center; gap:.7rem; margin:1.5rem 0 .7rem; }
+  .section-header h3 { font-family:'Poppins',sans-serif; font-size:1.1rem; color:var(--text); }
+  .section-num { width:32px; height:32px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-weight:700; font-size:.9rem; flex-shrink:0; }
+
+  .score-banner { background:linear-gradient(135deg,var(--primary),var(--accent)); color:#fff; border-radius:14px; padding:1.2rem; margin-top:1.2rem; display:flex; justify-content:space-between; align-items:center; }
+  .score-banner .num { font-family:'Poppins',sans-serif; font-size:2.2rem; font-weight:700; }
+  .score-banner .lbl { font-size:.9rem; opacity:.9; }
+
+  .section-score { display:flex; justify-content:space-between; align-items:center; padding:.5rem 0; border-bottom:1px solid #eef2ff; }
+  .section-score:last-child { border-bottom:none; }
+
+  table { width:100%; border-collapse:collapse; margin:.8rem 0; font-size:.88rem; }
+  th, td { padding:.5rem .65rem; border:1px solid var(--border); text-align:left; }
+  th { background:var(--primary-light); font-family:'Poppins',sans-serif; font-weight:600; }
+  tr:nth-child(even) { background:#f7f9ff; }
+  .pts { font-weight:700; color:var(--primary); }
+
+  .tip-box { background:var(--orange-light); border-radius:12px; padding:.9rem 1.1rem; margin:.7rem 0; border-left:4px solid var(--orange); }
+  .tip-box.green { background:var(--accent-light); border-left-color:var(--accent); }
+  .tip-box .icon { font-size:1.2rem; margin-right:.3rem; }
+
+  .step-list { counter-reset:step; list-style:none; padding:0; }
+  .step-list li { counter-increment:step; position:relative; padding:.55rem 0 .55rem 3rem; border-bottom:1px solid #eef2ff; }
+  .step-list li::before { content:counter(step); position:absolute; left:0; top:.45rem; width:2rem; height:2rem; background:var(--primary); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-weight:700; font-size:.85rem; }
+
+  .print-btn { display:inline-flex; align-items:center; gap:.4rem; font-family:'Poppins',sans-serif; font-size:.88rem; font-weight:600; padding:.45rem 1.1rem; border-radius:24px; background:var(--text); color:#fff; border:none; cursor:pointer; margin-bottom:1rem; }
+
+  @media print {
+    .tab-nav, .print-btn { display:none!important; }
+    .tab-panel { display:block!important; page-break-inside:avoid; }
+  }
+  @media (max-width:600px) {
+    .hero h1 { font-size:1.55rem; }
+    .card { padding:1rem; }
+    .options { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>📐 5th Grade Math Practice</h1>
+  <div class="subtitle">20 Questions · Fractions, Word Problems, Geometry &amp; Number Sense</div>
+  <div class="badge-row">
+    <span class="badge">Grade 5</span>
+    <span class="badge">20 Questions</span>
+    <span class="badge">Auto-Scored</span>
+    <span class="badge">Woodsbury 2026</span>
+  </div>
+</div>
+
+<div class="container">
+  <button class="print-btn" onclick="window.print()">🖨️ Print This Test</button>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="overview">📋 Overview</button>
+    <button class="tab-btn" data-tab="practice">✏️ Practice</button>
+    <button class="tab-btn" data-tab="results">⭐ Results</button>
+    <button class="tab-btn" data-tab="tips">💡 Math Tips</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="tab-panel active" id="tab-overview">
+    <div class="card">
+      <h2>📐 What's in This Practice Set?</h2>
+      <p>This test covers four key 5th-grade math topics. Click any answer to get instant feedback — green means correct, red means wrong (and the right answer lights up). Your score tracks live in the Results tab.</p>
+    </div>
+    <div class="card green">
+      <h2>📚 Topics Covered</h2>
+      <table>
+        <tr><th>Section</th><th>Topic</th><th>Questions</th><th>Points</th></tr>
+        <tr><td><strong>A</strong></td><td>Fractions &amp; Decimals</td><td>5</td><td class="pts">5 pts</td></tr>
+        <tr><td><strong>B</strong></td><td>Word Problems</td><td>5</td><td class="pts">5 pts</td></tr>
+        <tr><td><strong>C</strong></td><td>Geometry &amp; Measurement</td><td>5</td><td class="pts">5 pts</td></tr>
+        <tr><td><strong>D</strong></td><td>Number Sense &amp; Patterns</td><td>5</td><td class="pts">5 pts</td></tr>
+        <tr><th colspan="2">Total</th><td>20</td><td class="pts">20 pts</td></tr>
+      </table>
+    </div>
+    <div class="card purple">
+      <h2>🏅 Score Guide</h2>
+      <table>
+        <tr><th>Score</th><th>Level</th><th>What It Means</th></tr>
+        <tr><td class="pts">18–20</td><td>🥇 Gold</td><td>Excellent! You're mastering 5th grade math.</td></tr>
+        <tr><td class="pts">14–17</td><td>🥈 Silver</td><td>Great job — review the questions you missed.</td></tr>
+        <tr><td class="pts">10–13</td><td>🥉 Bronze</td><td>Good start! Focus on sections where you struggled.</td></tr>
+        <tr><td class="pts">0–9</td><td>📚 Keep Going</td><td>Check the Tips tab and try again — you'll improve!</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- PRACTICE -->
+  <div class="tab-panel" id="tab-practice">
+
+    <div class="section-header">
+      <div class="section-num">A</div>
+      <h3>Fractions &amp; Decimals</h3>
+    </div>
+
+    <div class="question-block" id="qb1">
+      <span class="q-section-label label-a">Section A</span>
+      <div class="q-text">1. What is 3/4 + 1/8?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(1,'A')"><span class="opt-letter">A</span> 7/8</button>
+        <button class="opt-btn" onclick="answer(1,'B')"><span class="opt-letter">B</span> 4/12</button>
+        <button class="opt-btn" onclick="answer(1,'C')"><span class="opt-letter">C</span> 1 whole</button>
+        <button class="opt-btn" onclick="answer(1,'D')"><span class="opt-letter">D</span> 5/8</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+
+    <div class="question-block" id="qb2">
+      <span class="q-section-label label-a">Section A</span>
+      <div class="q-text">2. Which decimal is equal to 3/5?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(2,'A')"><span class="opt-letter">A</span> 0.35</button>
+        <button class="opt-btn" onclick="answer(2,'B')"><span class="opt-letter">B</span> 0.6</button>
+        <button class="opt-btn" onclick="answer(2,'C')"><span class="opt-letter">C</span> 0.5</button>
+        <button class="opt-btn" onclick="answer(2,'D')"><span class="opt-letter">D</span> 0.53</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+
+    <div class="question-block" id="qb3">
+      <span class="q-section-label label-a">Section A</span>
+      <div class="q-text">3. What is 2.45 × 10?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(3,'A')"><span class="opt-letter">A</span> 24.5</button>
+        <button class="opt-btn" onclick="answer(3,'B')"><span class="opt-letter">B</span> 2,450</button>
+        <button class="opt-btn" onclick="answer(3,'C')"><span class="opt-letter">C</span> 245</button>
+        <button class="opt-btn" onclick="answer(3,'D')"><span class="opt-letter">D</span> 0.245</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+
+    <div class="question-block" id="qb4">
+      <span class="q-section-label label-a">Section A</span>
+      <div class="q-text">4. What is 5/6 − 1/3?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(4,'A')"><span class="opt-letter">A</span> 4/3</button>
+        <button class="opt-btn" onclick="answer(4,'B')"><span class="opt-letter">B</span> 1/2</button>
+        <button class="opt-btn" onclick="answer(4,'C')"><span class="opt-letter">C</span> 2/6</button>
+        <button class="opt-btn" onclick="answer(4,'D')"><span class="opt-letter">D</span> 1/6</button>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+
+    <div class="question-block" id="qb5">
+      <span class="q-section-label label-a">Section A</span>
+      <div class="q-text">5. Which value is the greatest?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(5,'A')"><span class="opt-letter">A</span> 0.75</button>
+        <button class="opt-btn" onclick="answer(5,'B')"><span class="opt-letter">B</span> 3/8</button>
+        <button class="opt-btn" onclick="answer(5,'C')"><span class="opt-letter">C</span> 7/10</button>
+        <button class="opt-btn" onclick="answer(5,'D')"><span class="opt-letter">D</span> 2/3</button>
+      </div>
+      <div class="feedback" id="fb5"></div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-num" style="background:var(--accent)">B</div>
+      <h3 style="color:var(--accent)">Word Problems</h3>
+    </div>
+
+    <div class="question-block" id="qb6">
+      <span class="q-section-label label-b">Section B</span>
+      <div class="q-text">6. Maya has 24 marbles. She gives 1/3 of them to Lily. How many does Maya have left?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(6,'A')"><span class="opt-letter">A</span> 8</button>
+        <button class="opt-btn" onclick="answer(6,'B')"><span class="opt-letter">B</span> 16</button>
+        <button class="opt-btn" onclick="answer(6,'C')"><span class="opt-letter">C</span> 12</button>
+        <button class="opt-btn" onclick="answer(6,'D')"><span class="opt-letter">D</span> 6</button>
+      </div>
+      <div class="feedback" id="fb6"></div>
+    </div>
+
+    <div class="question-block" id="qb7">
+      <span class="q-section-label label-b">Section B</span>
+      <div class="q-text">7. A pizza has 8 slices. Jake ate 3 slices. What fraction of the pizza remains?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(7,'A')"><span class="opt-letter">A</span> 3/8</button>
+        <button class="opt-btn" onclick="answer(7,'B')"><span class="opt-letter">B</span> 8/3</button>
+        <button class="opt-btn" onclick="answer(7,'C')"><span class="opt-letter">C</span> 5/8</button>
+        <button class="opt-btn" onclick="answer(7,'D')"><span class="opt-letter">D</span> 1/2</button>
+      </div>
+      <div class="feedback" id="fb7"></div>
+    </div>
+
+    <div class="question-block" id="qb8">
+      <span class="q-section-label label-b">Section B</span>
+      <div class="q-text">8. A book has 320 pages. Tom reads 40 pages a day. How many days will it take him to finish?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(8,'A')"><span class="opt-letter">A</span> 6</button>
+        <button class="opt-btn" onclick="answer(8,'B')"><span class="opt-letter">B</span> 8</button>
+        <button class="opt-btn" onclick="answer(8,'C')"><span class="opt-letter">C</span> 9</button>
+        <button class="opt-btn" onclick="answer(8,'D')"><span class="opt-letter">D</span> 7</button>
+      </div>
+      <div class="feedback" id="fb8"></div>
+    </div>
+
+    <div class="question-block" id="qb9">
+      <span class="q-section-label label-b">Section B</span>
+      <div class="q-text">9. Apples cost $0.75 each. How much do 12 apples cost?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(9,'A')"><span class="opt-letter">A</span> $8.25</button>
+        <button class="opt-btn" onclick="answer(9,'B')"><span class="opt-letter">B</span> $9.00</button>
+        <button class="opt-btn" onclick="answer(9,'C')"><span class="opt-letter">C</span> $9.75</button>
+        <button class="opt-btn" onclick="answer(9,'D')"><span class="opt-letter">D</span> $7.50</button>
+      </div>
+      <div class="feedback" id="fb9"></div>
+    </div>
+
+    <div class="question-block" id="qb10">
+      <span class="q-section-label label-b">Section B</span>
+      <div class="q-text">10. A rectangle is 8 cm long and 4.5 cm wide. What is its area?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(10,'A')"><span class="opt-letter">A</span> 25 cm²</button>
+        <button class="opt-btn" onclick="answer(10,'B')"><span class="opt-letter">B</span> 36 cm²</button>
+        <button class="opt-btn" onclick="answer(10,'C')"><span class="opt-letter">C</span> 32 cm²</button>
+        <button class="opt-btn" onclick="answer(10,'D')"><span class="opt-letter">D</span> 40.5 cm²</button>
+      </div>
+      <div class="feedback" id="fb10"></div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-num" style="background:var(--orange)">C</div>
+      <h3 style="color:var(--orange)">Geometry &amp; Measurement</h3>
+    </div>
+
+    <div class="question-block" id="qb11">
+      <span class="q-section-label label-c">Section C</span>
+      <div class="q-text">11. A square has a perimeter of 36 inches. What is the length of one side?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(11,'A')"><span class="opt-letter">A</span> 6 in</button>
+        <button class="opt-btn" onclick="answer(11,'B')"><span class="opt-letter">B</span> 9 in</button>
+        <button class="opt-btn" onclick="answer(11,'C')"><span class="opt-letter">C</span> 12 in</button>
+        <button class="opt-btn" onclick="answer(11,'D')"><span class="opt-letter">D</span> 4 in</button>
+      </div>
+      <div class="feedback" id="fb11"></div>
+    </div>
+
+    <div class="question-block" id="qb12">
+      <span class="q-section-label label-c">Section C</span>
+      <div class="q-text">12. What is the volume of a box that is 4 cm × 3 cm × 5 cm?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(12,'A')"><span class="opt-letter">A</span> 12 cm³</button>
+        <button class="opt-btn" onclick="answer(12,'B')"><span class="opt-letter">B</span> 47 cm³</button>
+        <button class="opt-btn" onclick="answer(12,'C')"><span class="opt-letter">C</span> 60 cm³</button>
+        <button class="opt-btn" onclick="answer(12,'D')"><span class="opt-letter">D</span> 35 cm³</button>
+      </div>
+      <div class="feedback" id="fb12"></div>
+    </div>
+
+    <div class="question-block" id="qb13">
+      <span class="q-section-label label-c">Section C</span>
+      <div class="q-text">13. A triangle has angles of 45° and 70°. What is the measure of the third angle?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(13,'A')"><span class="opt-letter">A</span> 75°</button>
+        <button class="opt-btn" onclick="answer(13,'B')"><span class="opt-letter">B</span> 65°</button>
+        <button class="opt-btn" onclick="answer(13,'C')"><span class="opt-letter">C</span> 80°</button>
+        <button class="opt-btn" onclick="answer(13,'D')"><span class="opt-letter">D</span> 85°</button>
+      </div>
+      <div class="feedback" id="fb13"></div>
+    </div>
+
+    <div class="question-block" id="qb14">
+      <span class="q-section-label label-c">Section C</span>
+      <div class="q-text">14. Which unit is best for measuring the distance between two cities?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(14,'A')"><span class="opt-letter">A</span> Centimeters</button>
+        <button class="opt-btn" onclick="answer(14,'B')"><span class="opt-letter">B</span> Meters</button>
+        <button class="opt-btn" onclick="answer(14,'C')"><span class="opt-letter">C</span> Kilometers</button>
+        <button class="opt-btn" onclick="answer(14,'D')"><span class="opt-letter">D</span> Millimeters</button>
+      </div>
+      <div class="feedback" id="fb14"></div>
+    </div>
+
+    <div class="question-block" id="qb15">
+      <span class="q-section-label label-c">Section C</span>
+      <div class="q-text">15. A circle has a diameter of 10 cm. What is its radius?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(15,'A')"><span class="opt-letter">A</span> 20 cm</button>
+        <button class="opt-btn" onclick="answer(15,'B')"><span class="opt-letter">B</span> 10 cm</button>
+        <button class="opt-btn" onclick="answer(15,'C')"><span class="opt-letter">C</span> 5 cm</button>
+        <button class="opt-btn" onclick="answer(15,'D')"><span class="opt-letter">D</span> 3.14 cm</button>
+      </div>
+      <div class="feedback" id="fb15"></div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-num" style="background:var(--purple)">D</div>
+      <h3 style="color:var(--purple)">Number Sense &amp; Patterns</h3>
+    </div>
+
+    <div class="question-block" id="qb16">
+      <span class="q-section-label label-d">Section D</span>
+      <div class="q-text">16. What is the value of 5³?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(16,'A')"><span class="opt-letter">A</span> 15</button>
+        <button class="opt-btn" onclick="answer(16,'B')"><span class="opt-letter">B</span> 125</button>
+        <button class="opt-btn" onclick="answer(16,'C')"><span class="opt-letter">C</span> 25</button>
+        <button class="opt-btn" onclick="answer(16,'D')"><span class="opt-letter">D</span> 55</button>
+      </div>
+      <div class="feedback" id="fb16"></div>
+    </div>
+
+    <div class="question-block" id="qb17">
+      <span class="q-section-label label-d">Section D</span>
+      <div class="q-text">17. What is the Least Common Multiple (LCM) of 4 and 6?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(17,'A')"><span class="opt-letter">A</span> 8</button>
+        <button class="opt-btn" onclick="answer(17,'B')"><span class="opt-letter">B</span> 24</button>
+        <button class="opt-btn" onclick="answer(17,'C')"><span class="opt-letter">C</span> 12</button>
+        <button class="opt-btn" onclick="answer(17,'D')"><span class="opt-letter">D</span> 2</button>
+      </div>
+      <div class="feedback" id="fb17"></div>
+    </div>
+
+    <div class="question-block" id="qb18">
+      <span class="q-section-label label-d">Section D</span>
+      <div class="q-text">18. Which of these numbers is a prime number?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(18,'A')"><span class="opt-letter">A</span> 15</button>
+        <button class="opt-btn" onclick="answer(18,'B')"><span class="opt-letter">B</span> 21</button>
+        <button class="opt-btn" onclick="answer(18,'C')"><span class="opt-letter">C</span> 23</button>
+        <button class="opt-btn" onclick="answer(18,'D')"><span class="opt-letter">D</span> 27</button>
+      </div>
+      <div class="feedback" id="fb18"></div>
+    </div>
+
+    <div class="question-block" id="qb19">
+      <span class="q-section-label label-d">Section D</span>
+      <div class="q-text">19. What is the next number in the pattern? &nbsp; 3, 6, 12, 24, ___</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(19,'A')"><span class="opt-letter">A</span> 36</button>
+        <button class="opt-btn" onclick="answer(19,'B')"><span class="opt-letter">B</span> 48</button>
+        <button class="opt-btn" onclick="answer(19,'C')"><span class="opt-letter">C</span> 30</button>
+        <button class="opt-btn" onclick="answer(19,'D')"><span class="opt-letter">D</span> 42</button>
+      </div>
+      <div class="feedback" id="fb19"></div>
+    </div>
+
+    <div class="question-block" id="qb20">
+      <span class="q-section-label label-d">Section D</span>
+      <div class="q-text">20. What is the Greatest Common Factor (GCF) of 18 and 24?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(20,'A')"><span class="opt-letter">A</span> 4</button>
+        <button class="opt-btn" onclick="answer(20,'B')"><span class="opt-letter">B</span> 3</button>
+        <button class="opt-btn" onclick="answer(20,'C')"><span class="opt-letter">C</span> 9</button>
+        <button class="opt-btn" onclick="answer(20,'D')"><span class="opt-letter">D</span> 6</button>
+      </div>
+      <div class="feedback" id="fb20"></div>
+    </div>
+
+    <div class="score-banner" style="margin-top:1.5rem">
+      <div><div class="lbl">CURRENT SCORE</div><div class="num" id="liveScore">0 / 20</div></div>
+      <div style="text-align:right;font-size:.85rem;opacity:.85">Click Results tab<br>for section breakdown</div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="tab-panel" id="tab-results">
+    <div class="card">
+      <h2>⭐ Your Score</h2>
+      <div class="score-banner">
+        <div><div class="lbl">TOTAL SCORE</div><div class="num" id="totalScore">0 / 20</div></div>
+        <div id="medalDisplay" style="font-size:2.5rem">🎯</div>
+      </div>
+    </div>
+    <div class="card green">
+      <h2>📊 Section Breakdown</h2>
+      <div class="section-score"><span>Section A — Fractions &amp; Decimals</span><span id="secA" class="pts">0 / 5</span></div>
+      <div class="section-score"><span>Section B — Word Problems</span><span id="secB" class="pts">0 / 5</span></div>
+      <div class="section-score"><span>Section C — Geometry &amp; Measurement</span><span id="secC" class="pts">0 / 5</span></div>
+      <div class="section-score"><span>Section D — Number Sense &amp; Patterns</span><span id="secD" class="pts">0 / 5</span></div>
+    </div>
+    <div class="card orange">
+      <h2>🔍 Answer Key</h2>
+      <table>
+        <tr><th>Q</th><th>Answer</th><th>Explanation</th></tr>
+        <tr><td>1</td><td class="pts">A — 7/8</td><td>3/4 = 6/8, so 6/8 + 1/8 = 7/8</td></tr>
+        <tr><td>2</td><td class="pts">B — 0.6</td><td>3 ÷ 5 = 0.6</td></tr>
+        <tr><td>3</td><td class="pts">A — 24.5</td><td>Move the decimal one place right: 2.45 × 10 = 24.5</td></tr>
+        <tr><td>4</td><td class="pts">B — 1/2</td><td>1/3 = 2/6, so 5/6 − 2/6 = 3/6 = 1/2</td></tr>
+        <tr><td>5</td><td class="pts">A — 0.75</td><td>0.75 &gt; 0.70 &gt; 0.667 &gt; 0.375</td></tr>
+        <tr><td>6</td><td class="pts">B — 16</td><td>24 × 1/3 = 8 given away; 24 − 8 = 16</td></tr>
+        <tr><td>7</td><td class="pts">C — 5/8</td><td>8 slices − 3 eaten = 5 remaining → 5/8</td></tr>
+        <tr><td>8</td><td class="pts">B — 8</td><td>320 ÷ 40 = 8 days</td></tr>
+        <tr><td>9</td><td class="pts">B — $9.00</td><td>$0.75 × 12 = $9.00</td></tr>
+        <tr><td>10</td><td class="pts">B — 36 cm²</td><td>Area = length × width = 8 × 4.5 = 36</td></tr>
+        <tr><td>11</td><td class="pts">B — 9 in</td><td>Perimeter = 4 × side → side = 36 ÷ 4 = 9</td></tr>
+        <tr><td>12</td><td class="pts">C — 60 cm³</td><td>Volume = 4 × 3 × 5 = 60</td></tr>
+        <tr><td>13</td><td class="pts">B — 65°</td><td>180° − 45° − 70° = 65°</td></tr>
+        <tr><td>14</td><td class="pts">C — Kilometers</td><td>km is the standard unit for long distances</td></tr>
+        <tr><td>15</td><td class="pts">C — 5 cm</td><td>Radius = diameter ÷ 2 = 10 ÷ 2 = 5</td></tr>
+        <tr><td>16</td><td class="pts">B — 125</td><td>5³ = 5 × 5 × 5 = 125</td></tr>
+        <tr><td>17</td><td class="pts">C — 12</td><td>Multiples of 4: 4,8,12… Multiples of 6: 6,12… LCM = 12</td></tr>
+        <tr><td>18</td><td class="pts">C — 23</td><td>23 has no factors other than 1 and itself</td></tr>
+        <tr><td>19</td><td class="pts">B — 48</td><td>Pattern doubles each time: 24 × 2 = 48</td></tr>
+        <tr><td>20</td><td class="pts">D — 6</td><td>Factors of 18: 1,2,3,6,9,18. Factors of 24: 1,2,3,4,6,8,12,24. GCF = 6</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tab-panel" id="tab-tips">
+    <div class="card">
+      <h2>💡 Fraction &amp; Decimal Strategies</h2>
+      <ol class="step-list">
+        <li><strong>Common denominator trick:</strong> Before adding or subtracting fractions, find the LCD. Ask: "What number do both denominators divide into evenly?"</li>
+        <li><strong>Fraction to decimal:</strong> Divide the top by the bottom. 3/4 → 3 ÷ 4 = 0.75.</li>
+        <li><strong>Multiply/divide by powers of 10:</strong> Moving the decimal right = ×10. Moving left = ÷10.</li>
+        <li><strong>Compare fractions fast:</strong> Convert everything to decimals first, then rank them.</li>
+      </ol>
+    </div>
+    <div class="card green">
+      <h2>🧮 Word Problem Strategy</h2>
+      <ol class="step-list">
+        <li><strong>Read twice, solve once.</strong> Read all the way through before writing anything. Underline the question.</li>
+        <li><strong>Circle the key numbers</strong> and label what they represent.</li>
+        <li><strong>Choose your operation:</strong> "How many groups?" = divide. "Total if repeated?" = multiply.</li>
+        <li><strong>Check with estimation</strong> before committing to an answer.</li>
+      </ol>
+    </div>
+    <div class="card orange">
+      <h2>📐 Geometry Memory Tricks</h2>
+      <div class="tip-box"><span class="icon">📦</span><strong>Area vs. Volume:</strong> Area = flat surface (cm²). Volume = fills a 3D box (cm³).</div>
+      <div class="tip-box green"><span class="icon">🔺</span><strong>Triangle angles always = 180°:</strong> Subtract the two known angles from 180 to find the third.</div>
+      <div class="tip-box"><span class="icon">🔵</span><strong>Circle terms:</strong> Diameter = all the way across. Radius = half of diameter.</div>
+    </div>
+    <div class="card purple">
+      <h2>🔢 Number Sense Quick Wins</h2>
+      <div class="tip-box"><span class="icon">⚡</span><strong>Prime number check:</strong> Try dividing by 2, 3, 5, 7. If none work and the number is under 100, it's prime!</div>
+      <div class="tip-box green"><span class="icon">🔁</span><strong>LCM vs GCF:</strong> LCM = smallest number both divide into (go UP). GCF = biggest number that divides into both (go DOWN).</div>
+      <div class="tip-box"><span class="icon">📈</span><strong>Patterns:</strong> Look at what happens between terms — is it +5? ×2? −3? Find the rule, apply it.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const answers = {
+  1:'A',2:'B',3:'A',4:'B',5:'A',
+  6:'B',7:'C',8:'B',9:'B',10:'B',
+  11:'B',12:'C',13:'B',14:'C',15:'C',
+  16:'B',17:'C',18:'C',19:'B',20:'D'
+};
+const sections = { A:[1,2,3,4,5], B:[6,7,8,9,10], C:[11,12,13,14,15], D:[16,17,18,19,20] };
+const results = {};
+
+function answer(qn, choice) {
+  if (results[qn] !== undefined) return;
+  const correct = answers[qn];
+  results[qn] = (choice === correct);
+  const block = document.getElementById('qb' + qn);
+  const fb = document.getElementById('fb' + qn);
+  block.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    const letter = ['A','B','C','D'][i];
+    if (letter === choice && choice === correct) btn.classList.add('selected-correct');
+    else if (letter === choice) btn.classList.add('selected-wrong');
+    else if (letter === correct) btn.classList.add('reveal-correct');
+  });
+  block.classList.add(results[qn] ? 'correct' : 'incorrect');
+  fb.className = 'feedback show ' + (results[qn] ? 'correct' : 'wrong');
+  fb.textContent = results[qn] ? '✓ Correct!' : '✗ Incorrect — the correct answer is ' + correct + '.';
+  updateScore();
+}
+
+function updateScore() {
+  const total = Object.values(results).filter(Boolean).length;
+  document.getElementById('liveScore').textContent = total + ' / 20';
+  document.getElementById('totalScore').textContent = total + ' / 20';
+  const medals = ['📚','📚','📚','📚','📚','📚','📚','📚','📚','📚','🥉','🥉','🥉','🥉','🥈','🥈','🥈','🥈','🥇','🥇','🥇'];
+  document.getElementById('medalDisplay').textContent = medals[total] || '🥇';
+  ['A','B','C','D'].forEach(sec => {
+    const c = sections[sec].filter(n => results[n] === true).length;
+    document.getElementById('sec' + sec).textContent = c + ' / 5';
+  });
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'results') updateScore();
+  });
+});
+</script>
+</body>
+</html>

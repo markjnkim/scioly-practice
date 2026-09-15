@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5th Grade Reading Comprehension</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0faf8;
+    --card: #ffffff;
+    --primary: #00897b;
+    --primary-light: #e0f2f1;
+    --accent: #f57f17;
+    --accent-light: #fff8e1;
+    --blue: #1565c0;
+    --blue-light: #e3f2fd;
+    --purple: #6a1b9a;
+    --purple-light: #f3e5f5;
+    --text: #2d3436;
+    --muted: #636e72;
+    --border: #b2dfdb;
+    --success: #2e7d32;
+    --danger: #c62828;
+    --shadow: 0 4px 20px rgba(0,137,123,0.09);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Quicksand',sans-serif; background:var(--bg); color:var(--text); line-height:1.7; font-weight:500; }
+
+  .hero {
+    background: linear-gradient(135deg, #00897b 0%, #1565c0 60%, #6a1b9a 100%);
+    padding: 2.5rem 1.5rem 2rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; inset:0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 22px, rgba(255,255,255,0.04) 22px, rgba(255,255,255,0.04) 44px);
+  }
+  .hero h1 { font-family:'Baloo 2',sans-serif; font-size:2.2rem; color:#fff; text-shadow:2px 3px 8px rgba(0,0,0,0.2); position:relative; z-index:1; }
+  .hero .subtitle { color:rgba(255,255,255,0.92); font-size:1.05rem; font-weight:600; margin-top:.35rem; position:relative; z-index:1; }
+  .badge-row { display:flex; gap:.5rem; justify-content:center; margin-top:.7rem; flex-wrap:wrap; position:relative; z-index:1; }
+  .badge { background:rgba(255,255,255,0.2); backdrop-filter:blur(4px); padding:.25rem .75rem; border-radius:20px; font-size:.78rem; font-weight:700; color:#fff; border:1px solid rgba(255,255,255,0.3); }
+
+  .container { max-width:900px; margin:0 auto; padding:1.5rem 1rem; }
+
+  .tab-nav { display:flex; gap:.5rem; margin-bottom:1.5rem; flex-wrap:wrap; justify-content:center; }
+  .tab-btn { font-family:'Baloo 2',sans-serif; font-size:.95rem; font-weight:600; padding:.5rem 1.2rem; border-radius:30px; border:2px solid var(--border); background:var(--card); color:var(--muted); cursor:pointer; transition:all .2s; }
+  .tab-btn:hover { border-color:var(--primary); color:var(--primary); }
+  .tab-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); box-shadow:0 3px 12px rgba(0,137,123,0.3); }
+  .tab-panel { display:none; animation:slideIn .3s ease; }
+  .tab-panel.active { display:block; }
+  @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  .card { background:var(--card); border-radius:16px; padding:1.5rem; margin-bottom:1.2rem; box-shadow:var(--shadow); border-top:4px solid var(--primary); }
+  .card.amber { border-top-color:var(--accent); }
+  .card.blue { border-top-color:var(--blue); }
+  .card.purple { border-top-color:var(--purple); }
+  .card h2 { font-family:'Baloo 2',sans-serif; font-size:1.3rem; margin-bottom:.5rem; }
+  .card h3 { font-family:'Baloo 2',sans-serif; font-size:1.05rem; margin:.7rem 0 .3rem; }
+
+  /* TIMER */
+  .timer-bar { display:flex; align-items:center; gap:.9rem; background:var(--blue-light); border-radius:12px; padding:.9rem 1.1rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+  .timer-display { font-family:'Baloo 2',sans-serif; font-size:2.2rem; font-weight:700; color:var(--blue); min-width:110px; }
+  .timer-btn { font-family:'Baloo 2',sans-serif; font-size:.88rem; font-weight:600; padding:.4rem 1rem; border-radius:24px; border:none; cursor:pointer; transition:transform .15s; }
+  .timer-btn:active { transform:scale(.95); }
+  .btn-start { background:#2e7d32; color:#fff; }
+  .btn-pause { background:#f9a825; color:#2d3436; }
+  .btn-reset { background:#c62828; color:#fff; }
+  .timer-label { font-weight:700; color:var(--blue); font-size:.82rem; }
+
+  /* PASSAGE */
+  .passage { background:#fffef7; border:2px solid var(--border); border-radius:14px; padding:1.5rem; margin:1rem 0; font-size:.97rem; line-height:1.85; }
+  .passage h3 { font-family:'Baloo 2',sans-serif; font-size:1.15rem; color:var(--primary); margin-bottom:.8rem; text-align:center; }
+  .passage p { margin-bottom:1rem; }
+  .passage p:last-child { margin-bottom:0; }
+
+  /* QUESTIONS */
+  .q-type-label { display:inline-block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:.2rem .6rem; border-radius:10px; margin-bottom:.5rem; }
+  .q-literal { background:var(--primary-light); color:var(--primary); }
+  .q-inference { background:var(--blue-light); color:var(--blue); }
+  .q-vocab { background:var(--accent-light); color:var(--accent); }
+  .q-main-idea { background:var(--purple-light); color:var(--purple); }
+
+  .question-block { background:#f5fdfb; border:2px solid var(--border); border-radius:14px; padding:1.1rem 1.2rem; margin-bottom:1rem; transition:border-color .2s; }
+  .question-block.correct { border-color:var(--success); background:#f0faf0; }
+  .question-block.incorrect { border-color:var(--danger); background:#fff5f5; }
+  .q-text { font-weight:700; margin-bottom:.75rem; font-size:1rem; }
+  .options { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; }
+  .opt-btn { font-family:'Quicksand',sans-serif; font-size:.9rem; font-weight:600; padding:.55rem .9rem; border-radius:10px; border:2px solid var(--border); background:#fff; color:var(--text); cursor:pointer; text-align:left; transition:all .18s; display:flex; align-items:center; gap:.5rem; }
+  .opt-btn:hover:not(:disabled) { border-color:var(--primary); background:var(--primary-light); }
+  .opt-btn.selected-correct { border-color:var(--success); background:#e8f5e9; color:#2e7d32; }
+  .opt-btn.selected-wrong { border-color:var(--danger); background:#ffebee; color:#c62828; }
+  .opt-btn.reveal-correct { border-color:var(--success); background:#e8f5e9; color:#2e7d32; }
+  .opt-btn:disabled { cursor:default; }
+  .opt-letter { font-family:'Baloo 2',sans-serif; font-weight:700; width:22px; height:22px; border-radius:50%; background:var(--border); display:flex; align-items:center; justify-content:center; font-size:.75rem; flex-shrink:0; }
+  .feedback { font-size:.85rem; font-weight:700; margin-top:.55rem; padding:.35rem .7rem; border-radius:8px; display:none; }
+  .feedback.show { display:block; }
+  .feedback.correct { background:#e8f5e9; color:#2e7d32; }
+  .feedback.wrong { background:#ffebee; color:#c62828; }
+
+  .score-banner { background:linear-gradient(135deg,var(--primary),var(--blue)); color:#fff; border-radius:14px; padding:1.2rem; margin-top:1.2rem; display:flex; justify-content:space-between; align-items:center; }
+  .score-banner .num { font-family:'Baloo 2',sans-serif; font-size:2.2rem; font-weight:700; }
+  .score-banner .lbl { font-size:.9rem; opacity:.9; }
+
+  .q-type-row { display:flex; justify-content:space-between; align-items:center; padding:.5rem 0; border-bottom:1px solid #e0f2f1; }
+  .q-type-row:last-child { border-bottom:none; }
+
+  table { width:100%; border-collapse:collapse; margin:.8rem 0; font-size:.88rem; }
+  th, td { padding:.5rem .65rem; border:1px solid var(--border); text-align:left; }
+  th { background:var(--primary-light); font-family:'Baloo 2',sans-serif; font-weight:600; }
+  tr:nth-child(even) { background:#f5fdfb; }
+  .pts { font-weight:700; color:var(--primary); }
+
+  .tip-box { background:var(--accent-light); border-radius:12px; padding:.9rem 1.1rem; margin:.7rem 0; border-left:4px solid var(--accent); }
+  .tip-box.blue { background:var(--blue-light); border-left-color:var(--blue); }
+  .tip-box .icon { font-size:1.2rem; margin-right:.3rem; }
+
+  .step-list { counter-reset:step; list-style:none; padding:0; }
+  .step-list li { counter-increment:step; position:relative; padding:.55rem 0 .55rem 3rem; border-bottom:1px solid #e0f2f1; }
+  .step-list li::before { content:counter(step); position:absolute; left:0; top:.45rem; width:2rem; height:2rem; background:var(--primary); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:.85rem; }
+
+  .print-btn { display:inline-flex; align-items:center; gap:.4rem; font-family:'Baloo 2',sans-serif; font-size:.88rem; font-weight:600; padding:.45rem 1.1rem; border-radius:24px; background:var(--text); color:#fff; border:none; cursor:pointer; margin-bottom:1rem; }
+
+  @media print {
+    .tab-nav, .timer-bar, .print-btn { display:none!important; }
+    .tab-panel { display:block!important; page-break-inside:avoid; }
+  }
+  @media (max-width:600px) {
+    .hero h1 { font-size:1.55rem; }
+    .card { padding:1rem; }
+    .options { grid-template-columns:1fr; }
+    .timer-display { font-size:1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>📖 5th Grade Reading Comprehension</h1>
+  <div class="subtitle">Read the Passage · Answer 12 Questions · Auto-Scored</div>
+  <div class="badge-row">
+    <span class="badge">Grade 5</span>
+    <span class="badge">12 Questions</span>
+    <span class="badge">21 Points</span>
+    <span class="badge">Woodsbury 2026</span>
+  </div>
+</div>
+
+<div class="container">
+  <button class="print-btn" onclick="window.print()">🖨️ Print This Test</button>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="overview">📋 Overview</button>
+    <button class="tab-btn" data-tab="passage">📖 Read</button>
+    <button class="tab-btn" data-tab="questions">❓ Questions</button>
+    <button class="tab-btn" data-tab="results">⭐ Results</button>
+    <button class="tab-btn" data-tab="tips">💡 Reading Tips</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="tab-panel active" id="tab-overview">
+    <div class="card">
+      <h2>📖 How This Test Works</h2>
+      <p>First, read the passage carefully in the <strong>Read</strong> tab (use the 10-minute timer). Then go to the <strong>Questions</strong> tab and answer all 12 questions. You'll get instant feedback on each answer!</p>
+      <div class="tip-box">
+        <span class="icon">💡</span>
+        <strong>Strategy:</strong> Read the passage once all the way through, then read the questions. You may go back to the passage to find or confirm answers — that's normal and smart!
+      </div>
+    </div>
+    <div class="card amber">
+      <h2>📊 Question Types</h2>
+      <table>
+        <tr><th>Type</th><th>What You Do</th><th>Questions</th><th>Points</th></tr>
+        <tr><td><span class="q-type-label q-literal">Literal</span></td><td>Find the answer directly in the text</td><td>3</td><td class="pts">3 pts</td></tr>
+        <tr><td><span class="q-type-label q-inference">Inference</span></td><td>Use clues to figure out what the text implies</td><td>3</td><td class="pts">6 pts</td></tr>
+        <tr><td><span class="q-type-label q-vocab">Vocabulary</span></td><td>Determine a word's meaning from context</td><td>3</td><td class="pts">3 pts</td></tr>
+        <tr><td><span class="q-type-label q-main-idea">Main Idea</span></td><td>Identify the central message or author's purpose</td><td>3</td><td class="pts">9 pts (3 each)</td></tr>
+        <tr><th colspan="2">Total</th><td>12</td><td class="pts">21 pts</td></tr>
+      </table>
+    </div>
+    <div class="card purple">
+      <h2>🏅 Score Guide</h2>
+      <table>
+        <tr><th>Score</th><th>Level</th><th>What It Means</th></tr>
+        <tr><td class="pts">19–21</td><td>🥇 Gold</td><td>Excellent reader! Strong comprehension at all levels.</td></tr>
+        <tr><td class="pts">15–18</td><td>🥈 Silver</td><td>Good job — review which question type gave you trouble.</td></tr>
+        <tr><td class="pts">10–14</td><td>🥉 Bronze</td><td>Keep reading! Focus on rereading before answering.</td></tr>
+        <tr><td class="pts">0–9</td><td>📚 Keep Going</td><td>Practice reading a little every day — it gets easier!</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- PASSAGE TAB -->
+  <div class="tab-panel" id="tab-passage">
+    <div class="timer-bar">
+      <div>
+        <div class="timer-label">READING TIMER — 10:00</div>
+        <div class="timer-display" id="readTimer">10:00</div>
+      </div>
+      <button class="timer-btn btn-start" onclick="startTimer('read')">▶ Start</button>
+      <button class="timer-btn btn-pause" onclick="pauseTimer('read')">⏸ Pause</button>
+      <button class="timer-btn btn-reset" onclick="resetTimer('read',600)">↺ Reset</button>
+    </div>
+
+    <div class="card">
+      <h2>📄 Read This Passage Carefully</h2>
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem">Annotate as you read — underline important facts, circle unfamiliar words, write notes in the margin.</p>
+      <div class="passage">
+        <h3>The Amazing Journey of the Monarch Butterfly</h3>
+        <p>Every year, millions of monarch butterflies perform one of nature's most remarkable journeys. These small orange-and-black insects travel up to 3,000 miles from Canada and the northern United States all the way to the mountain forests of central Mexico. Scientists describe it as one of the most extraordinary migrations on Earth.</p>
+        <p>The journey begins in late summer when the days grow shorter and temperatures drop. Monarchs that hatch in late August and September are a special generation — they live up to eight months, far longer than the six-week lifespan of summer monarchs. These "super generation" butterflies are born with a built-in compass and an extraordinary drive to travel south.</p>
+        <p>As they fly, monarchs gather in huge clusters on trees, creating orange-and-black clouds that shimmer in the wind. They travel about 50 miles per day, riding warm air currents called thermals to conserve energy. By November, they arrive at their wintering grounds in the oyamel fir forests of Michoacán, Mexico, where millions of butterflies cling to every branch, turning the trees orange.</p>
+        <p>In spring, the cycle reverses. The monarchs begin flying north, stopping to mate and lay eggs along the way. But here is the most puzzling part: the butterflies that return north are not the same individuals that traveled south. It takes several generations of monarchs to complete the full round trip. Somehow, each new generation knows exactly where to go — even though they have never made the journey before.</p>
+        <p>Scientists have discovered that monarchs use the position of the sun as a kind of compass. Special cells in their antennae detect polarized light, helping them maintain direction. They also seem to sense Earth's magnetic field. Even so, exactly how they navigate to the same forests their great-grandparents left months earlier remains one of nature's great mysteries.</p>
+        <p>Unfortunately, monarch populations have dropped dramatically in recent decades. Loss of milkweed — the only plant monarchs use to lay their eggs and the only food caterpillars eat — is a major cause. Climate change and the loss of wintering habitat in Mexico are also serious threats. Scientists and conservation groups are working to plant milkweed gardens and protect the mountain forests monarchs depend on.</p>
+        <p>The monarch butterfly's migration is a reminder of how much we still have to learn about the natural world — and how important it is to protect it.</p>
+      </div>
+      <div class="tip-box blue">
+        <span class="icon">✅</span>
+        <strong>Done reading?</strong> Click the Questions tab to start answering. You can come back to this passage any time!
+      </div>
+    </div>
+  </div>
+
+  <!-- QUESTIONS TAB -->
+  <div class="tab-panel" id="tab-questions">
+    <div class="timer-bar">
+      <div>
+        <div class="timer-label">ANSWERING TIMER — 15:00</div>
+        <div class="timer-display" id="ansTimer">15:00</div>
+      </div>
+      <button class="timer-btn btn-start" onclick="startTimer('ans')">▶ Start</button>
+      <button class="timer-btn btn-pause" onclick="pauseTimer('ans')">⏸ Pause</button>
+      <button class="timer-btn btn-reset" onclick="resetTimer('ans',900)">↺ Reset</button>
+    </div>
+
+    <!-- LITERAL RECALL -->
+    <div class="question-block" id="qb1">
+      <span class="q-type-label q-literal">Literal — 1 pt</span>
+      <div class="q-text">1. According to the passage, where do monarch butterflies spend the winter?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(1,'A')"><span class="opt-letter">A</span> Southern Canada</button>
+        <button class="opt-btn" onclick="answer(1,'B')"><span class="opt-letter">B</span> Northern United States</button>
+        <button class="opt-btn" onclick="answer(1,'C')"><span class="opt-letter">C</span> Mountain forests of central Mexico</button>
+        <button class="opt-btn" onclick="answer(1,'D')"><span class="opt-letter">D</span> The coast of California</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+
+    <div class="question-block" id="qb2">
+      <span class="q-type-label q-literal">Literal — 1 pt</span>
+      <div class="q-text">2. How far can monarch butterflies travel during their migration?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(2,'A')"><span class="opt-letter">A</span> Up to 500 miles</button>
+        <button class="opt-btn" onclick="answer(2,'B')"><span class="opt-letter">B</span> Up to 1,000 miles</button>
+        <button class="opt-btn" onclick="answer(2,'C')"><span class="opt-letter">C</span> Up to 3,000 miles</button>
+        <button class="opt-btn" onclick="answer(2,'D')"><span class="opt-letter">D</span> Up to 5,000 miles</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+
+    <div class="question-block" id="qb3">
+      <span class="q-type-label q-literal">Literal — 1 pt</span>
+      <div class="q-text">3. What is the only plant that monarch caterpillars eat?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(3,'A')"><span class="opt-letter">A</span> Oyamel fir</button>
+        <button class="opt-btn" onclick="answer(3,'B')"><span class="opt-letter">B</span> Milkweed</button>
+        <button class="opt-btn" onclick="answer(3,'C')"><span class="opt-letter">C</span> Goldenrod</button>
+        <button class="opt-btn" onclick="answer(3,'D')"><span class="opt-letter">D</span> Clover</button>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+
+    <!-- INFERENCE -->
+    <div class="question-block" id="qb4">
+      <span class="q-type-label q-inference">Inference — 2 pts</span>
+      <div class="q-text">4. Why do scientists call the monarch migration "one of nature's great mysteries"?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(4,'A')"><span class="opt-letter">A</span> Because no one has ever seen a monarch butterfly</button>
+        <button class="opt-btn" onclick="answer(4,'B')"><span class="opt-letter">B</span> Because new generations find the same forests without ever having been there</button>
+        <button class="opt-btn" onclick="answer(4,'C')"><span class="opt-letter">C</span> Because the butterflies travel only at night</button>
+        <button class="opt-btn" onclick="answer(4,'D')"><span class="opt-letter">D</span> Because scientists have never studied monarchs</button>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+
+    <div class="question-block" id="qb5">
+      <span class="q-type-label q-inference">Inference — 2 pts</span>
+      <div class="q-text">5. Based on the passage, what can you infer would happen if all milkweed disappeared?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(5,'A')"><span class="opt-letter">A</span> Monarch butterflies would migrate farther south</button>
+        <button class="opt-btn" onclick="answer(5,'B')"><span class="opt-letter">B</span> Monarchs would switch to eating oyamel fir trees</button>
+        <button class="opt-btn" onclick="answer(5,'C')"><span class="opt-letter">C</span> Monarch butterflies could not reproduce, and the population would collapse</button>
+        <button class="opt-btn" onclick="answer(5,'D')"><span class="opt-letter">D</span> Monarchs would become stronger and learn to eat other plants</button>
+      </div>
+      <div class="feedback" id="fb5"></div>
+    </div>
+
+    <div class="question-block" id="qb6">
+      <span class="q-type-label q-inference">Inference — 2 pts</span>
+      <div class="q-text">6. The "super generation" monarchs live up to eight months. What can you infer about why this longer lifespan is important?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(6,'A')"><span class="opt-letter">A</span> It allows them to eat more milkweed during summer</button>
+        <button class="opt-btn" onclick="answer(6,'B')"><span class="opt-letter">B</span> It gives them enough time to travel to Mexico and survive the winter</button>
+        <button class="opt-btn" onclick="answer(6,'C')"><span class="opt-letter">C</span> It means they can teach the next generation where to fly</button>
+        <button class="opt-btn" onclick="answer(6,'D')"><span class="opt-letter">D</span> It allows them to avoid predators more easily</button>
+      </div>
+      <div class="feedback" id="fb6"></div>
+    </div>
+
+    <!-- VOCABULARY -->
+    <div class="question-block" id="qb7">
+      <span class="q-type-label q-vocab">Vocabulary — 1 pt</span>
+      <div class="q-text">7. In paragraph 3, the word "thermals" most likely means —</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(7,'A')"><span class="opt-letter">A</span> Strong winds that blow from the north</button>
+        <button class="opt-btn" onclick="answer(7,'B')"><span class="opt-letter">B</span> Rising columns of warm air that help birds and butterflies soar</button>
+        <button class="opt-btn" onclick="answer(7,'C')"><span class="opt-letter">C</span> A type of winter clothing worn by butterflies</button>
+        <button class="opt-btn" onclick="answer(7,'D')"><span class="opt-letter">D</span> Rivers that run through the forests of Mexico</button>
+      </div>
+      <div class="feedback" id="fb7"></div>
+    </div>
+
+    <div class="question-block" id="qb8">
+      <span class="q-type-label q-vocab">Vocabulary — 1 pt</span>
+      <div class="q-text">8. As used in paragraph 2, the word "generation" refers to —</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(8,'A')"><span class="opt-letter">A</span> A machine that produces electricity</button>
+        <button class="opt-btn" onclick="answer(8,'B')"><span class="opt-letter">B</span> The total distance monarchs travel</button>
+        <button class="opt-btn" onclick="answer(8,'C')"><span class="opt-letter">C</span> A group of individuals born and living around the same time</button>
+        <button class="opt-btn" onclick="answer(8,'D')"><span class="opt-letter">D</span> The number of eggs a monarch lays</button>
+      </div>
+      <div class="feedback" id="fb8"></div>
+    </div>
+
+    <div class="question-block" id="qb9">
+      <span class="q-type-label q-vocab">Vocabulary — 1 pt</span>
+      <div class="q-text">9. The word "remarkable" in the first paragraph most closely means —</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(9,'A')"><span class="opt-letter">A</span> Ordinary and expected</button>
+        <button class="opt-btn" onclick="answer(9,'B')"><span class="opt-letter">B</span> Worthy of attention; extraordinary</button>
+        <button class="opt-btn" onclick="answer(9,'C')"><span class="opt-letter">C</span> Dangerous and frightening</button>
+        <button class="opt-btn" onclick="answer(9,'D')"><span class="opt-letter">D</span> Small and easy to miss</button>
+      </div>
+      <div class="feedback" id="fb9"></div>
+    </div>
+
+    <!-- MAIN IDEA / AUTHOR'S PURPOSE -->
+    <div class="question-block" id="qb10">
+      <span class="q-type-label q-main-idea">Main Idea — 3 pts</span>
+      <div class="q-text">10. What is the main idea of this passage?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(10,'A')"><span class="opt-letter">A</span> Monarch butterflies are orange and black and live in Mexico</button>
+        <button class="opt-btn" onclick="answer(10,'B')"><span class="opt-letter">B</span> Monarch butterfly migration is a remarkable natural phenomenon that is both scientifically fascinating and in need of protection</button>
+        <button class="opt-btn" onclick="answer(10,'C')"><span class="opt-letter">C</span> Scientists have completely figured out how monarch butterflies navigate</button>
+        <button class="opt-btn" onclick="answer(10,'D')"><span class="opt-letter">D</span> Milkweed is the most important plant in North America</button>
+      </div>
+      <div class="feedback" id="fb10"></div>
+    </div>
+
+    <div class="question-block" id="qb11">
+      <span class="q-type-label q-main-idea">Author's Purpose — 3 pts</span>
+      <div class="q-text">11. What is the author's main purpose in writing this passage?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(11,'A')"><span class="opt-letter">A</span> To entertain readers with a fictional story about a butterfly's adventure</button>
+        <button class="opt-btn" onclick="answer(11,'B')"><span class="opt-letter">B</span> To persuade readers to never use pesticides</button>
+        <button class="opt-btn" onclick="answer(11,'C')"><span class="opt-letter">C</span> To inform readers about monarch migration and the threats monarchs face</button>
+        <button class="opt-btn" onclick="answer(11,'D')"><span class="opt-letter">D</span> To compare butterflies with other migrating insects</button>
+      </div>
+      <div class="feedback" id="fb11"></div>
+    </div>
+
+    <div class="question-block" id="qb12">
+      <span class="q-type-label q-main-idea">Text Structure — 3 pts</span>
+      <div class="q-text">12. How is the last paragraph (beginning "The monarch butterfly's migration...") best described?</div>
+      <div class="options">
+        <button class="opt-btn" onclick="answer(12,'A')"><span class="opt-letter">A</span> It introduces a brand-new topic about protecting forests</button>
+        <button class="opt-btn" onclick="answer(12,'B')"><span class="opt-letter">B</span> It is the main conflict of the passage</button>
+        <button class="opt-btn" onclick="answer(12,'C')"><span class="opt-letter">C</span> It is a concluding thought that connects the monarch's journey to a broader lesson</button>
+        <button class="opt-btn" onclick="answer(12,'D')"><span class="opt-letter">D</span> It contradicts the information given earlier in the passage</button>
+      </div>
+      <div class="feedback" id="fb12"></div>
+    </div>
+
+    <div class="score-banner" style="margin-top:1.5rem">
+      <div><div class="lbl">CURRENT SCORE</div><div class="num" id="liveScore">0 / 21</div></div>
+      <div style="text-align:right;font-size:.85rem;opacity:.85">See Results tab<br>for full breakdown</div>
+    </div>
+  </div>
+
+  <!-- RESULTS TAB -->
+  <div class="tab-panel" id="tab-results">
+    <div class="card">
+      <h2>⭐ Your Score</h2>
+      <div class="score-banner">
+        <div><div class="lbl">TOTAL SCORE</div><div class="num" id="totalScore">0 / 21</div></div>
+        <div id="medalDisplay" style="font-size:2.5rem">🎯</div>
+      </div>
+    </div>
+    <div class="card amber">
+      <h2>📊 Score by Question Type</h2>
+      <div class="q-type-row"><span><span class="q-type-label q-literal">Literal</span> Questions 1–3</span><span id="typeL" class="pts">0 / 3</span></div>
+      <div class="q-type-row"><span><span class="q-type-label q-inference">Inference</span> Questions 4–6</span><span id="typeI" class="pts">0 / 6</span></div>
+      <div class="q-type-row"><span><span class="q-type-label q-vocab">Vocabulary</span> Questions 7–9</span><span id="typeV" class="pts">0 / 3</span></div>
+      <div class="q-type-row"><span><span class="q-type-label q-main-idea">Main Idea</span> Questions 10–12</span><span id="typeM" class="pts">0 / 9</span></div>
+    </div>
+    <div class="card blue">
+      <h2>🔍 Answer Key</h2>
+      <table>
+        <tr><th>Q</th><th>Type</th><th>Answer</th><th>Explanation</th></tr>
+        <tr><td>1</td><td>Literal</td><td class="pts">C</td><td>Paragraph 3: "oyamel fir forests of Michoacán, Mexico"</td></tr>
+        <tr><td>2</td><td>Literal</td><td class="pts">C</td><td>Paragraph 1: "travel up to 3,000 miles"</td></tr>
+        <tr><td>3</td><td>Literal</td><td class="pts">B</td><td>Paragraph 6: "the only food caterpillars eat"</td></tr>
+        <tr><td>4</td><td>Inference</td><td class="pts">B</td><td>Paragraph 4 explains that new generations find the exact same forests without ever having been there — a puzzling feat science can't fully explain</td></tr>
+        <tr><td>5</td><td>Inference</td><td class="pts">C</td><td>Milkweed is described as the only plant for eggs and the only food for caterpillars — without it, reproduction would fail</td></tr>
+        <tr><td>6</td><td>Inference</td><td class="pts">B</td><td>A long lifespan lets the "super generation" survive the migration south and the winter — regular monarchs only live 6 weeks</td></tr>
+        <tr><td>7</td><td>Vocabulary</td><td class="pts">B</td><td>Context: they ride thermals "to conserve energy" — a rising warm air current explains the energy-saving benefit</td></tr>
+        <tr><td>8</td><td>Vocabulary</td><td class="pts">C</td><td>Context: describes butterflies hatching in Aug-Sept as "a special generation" — a group born at the same time</td></tr>
+        <tr><td>9</td><td>Vocabulary</td><td class="pts">B</td><td>"Remarkable" is used to describe the migration positively — "extraordinary" or "worthy of attention" fits best</td></tr>
+        <tr><td>10</td><td>Main Idea</td><td class="pts">B</td><td>The passage covers both the wonder of migration AND the threats it faces — option B captures both</td></tr>
+        <tr><td>11</td><td>Author's Purpose</td><td class="pts">C</td><td>The passage is nonfiction and primarily informational — it explains migration and conservation concerns</td></tr>
+        <tr><td>12</td><td>Text Structure</td><td class="pts">C</td><td>The final paragraph concludes with a broader lesson about learning from and protecting nature</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- TIPS TAB -->
+  <div class="tab-panel" id="tab-tips">
+    <div class="card">
+      <h2>💡 Before You Read: Active Reading</h2>
+      <ol class="step-list">
+        <li><strong>Preview the passage first.</strong> Read the title, any headers, and the first sentence of each paragraph. This gives you a "map" before you read carefully.</li>
+        <li><strong>Annotate as you read.</strong> Underline important facts, circle unfamiliar words, and put a star ★ next to sentences that seem important (like main ideas).</li>
+        <li><strong>Summarize each paragraph</strong> in the margin in 3–5 words. "monarchs travel south," "super generation hatches," etc. This helps you find answers faster.</li>
+        <li><strong>Notice signal words.</strong> "However," "unfortunately," "most importantly," "in contrast" — these words show the author is making an important point or shifting direction.</li>
+      </ol>
+    </div>
+    <div class="card amber">
+      <h2>❓ Answering Different Question Types</h2>
+      <div class="tip-box"><span class="icon">📍</span><strong>Literal questions:</strong> The answer IS in the text. Go back and find the exact sentence or phrase. Don't guess — locate it!</div>
+      <div class="tip-box blue"><span class="icon">🔎</span><strong>Inference questions:</strong> The answer isn't stated directly. Ask yourself: "What clues does the author give me? What conclusion do those clues point to?"</div>
+      <div class="tip-box"><span class="icon">📖</span><strong>Vocabulary questions:</strong> Cover the answer choices and re-read the sentence. What word would YOU put there? Then find the answer that matches your idea.</div>
+      <div class="tip-box blue"><span class="icon">💡</span><strong>Main idea questions:</strong> The main idea covers the WHOLE passage, not just one part. If an answer is too specific ("monarchs are orange") or too broad, cross it out.</div>
+    </div>
+    <div class="card blue">
+      <h2>⚠️ Common Reading Mistakes</h2>
+      <table>
+        <tr><th>Mistake</th><th>Fix</th></tr>
+        <tr><td>Picking the first answer that sounds okay</td><td>Read ALL four choices before picking — the best answer is sometimes the last one</td></tr>
+        <tr><td>Not going back to the text</td><td>Always re-read the relevant paragraph before answering — even if you think you remember</td></tr>
+        <tr><td>Confusing inference with personal opinion</td><td>Inference = what the TEXT implies, not what YOU think. Your answer must be supported by the passage</td></tr>
+        <tr><td>Choosing an answer that's "kind of right"</td><td>The best answer is FULLY supported by the text. Partially right answers are usually wrong</td></tr>
+        <tr><td>Spending too long on one question</td><td>Skip it and come back — don't let one hard question eat all your time</td></tr>
+      </table>
+    </div>
+    <div class="card purple">
+      <h2>📚 Build Your Reading Skills</h2>
+      <div class="tip-box"><span class="icon">📰</span><strong>Read nonfiction regularly.</strong> Magazines like <em>National Geographic Kids</em>, news articles, or science websites build the vocabulary and background knowledge that make passages easier.</div>
+      <div class="tip-box blue"><span class="icon">🗣️</span><strong>Talk about what you read.</strong> After finishing a passage or book chapter, summarize it to someone — what happened? What was the main point? What surprised you?</div>
+      <div class="tip-box"><span class="icon">✏️</span><strong>Write a 3-sentence summary.</strong> After every passage you read, write: (1) the topic, (2) the main idea, (3) the most interesting detail. This builds comprehension fast.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const answers = {1:'C',2:'C',3:'B',4:'B',5:'C',6:'B',7:'B',8:'C',9:'B',10:'B',11:'C',12:'C'};
+const points = {1:1,2:1,3:1,4:2,5:2,6:2,7:1,8:1,9:1,10:3,11:3,12:3};
+const typeMap = { L:[1,2,3], I:[4,5,6], V:[7,8,9], M:[10,11,12] };
+const typeMax = { L:3, I:6, V:3, M:9 };
+const results = {};
+
+function answer(qn, choice) {
+  if (results[qn] !== undefined) return;
+  const correct = answers[qn];
+  results[qn] = { correct: choice === correct, pts: choice === correct ? points[qn] : 0 };
+  const block = document.getElementById('qb' + qn);
+  const fb = document.getElementById('fb' + qn);
+  block.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    const letter = ['A','B','C','D'][i];
+    if (letter === choice && choice === correct) btn.classList.add('selected-correct');
+    else if (letter === choice) btn.classList.add('selected-wrong');
+    else if (letter === correct) btn.classList.add('reveal-correct');
+  });
+  block.classList.add(results[qn].correct ? 'correct' : 'incorrect');
+  fb.className = 'feedback show ' + (results[qn].correct ? 'correct' : 'wrong');
+  fb.textContent = results[qn].correct
+    ? '✓ Correct! (+' + points[qn] + ' pt' + (points[qn] > 1 ? 's' : '') + ')'
+    : '✗ Incorrect — correct answer is ' + correct + '.';
+  updateScore();
+}
+
+function updateScore() {
+  const total = Object.values(results).reduce((s, r) => s + r.pts, 0);
+  document.getElementById('liveScore').textContent = total + ' / 21';
+  document.getElementById('totalScore').textContent = total + ' / 21';
+  const medals = ['📚','📚','📚','📚','📚','📚','📚','📚','📚','📚','🥉','🥉','🥉','🥉','🥉','🥈','🥈','🥈','🥈','🥇','🥇','🥇'];
+  document.getElementById('medalDisplay').textContent = medals[total] || '🥇';
+  ['L','I','V','M'].forEach(t => {
+    const scored = typeMap[t].reduce((s, n) => s + (results[n] ? results[n].pts : 0), 0);
+    document.getElementById('type' + t).textContent = scored + ' / ' + typeMax[t];
+  });
+}
+
+// Timers
+const timers = { read:{remaining:600,interval:null}, ans:{remaining:900,interval:null} };
+function formatTime(s) { const m=Math.floor(s/60),sec=s%60; return m+':'+(sec<10?'0':'')+sec; }
+function startTimer(n) {
+  if (timers[n].interval) return;
+  const el = document.getElementById(n==='read'?'readTimer':'ansTimer');
+  timers[n].interval = setInterval(() => {
+    if (timers[n].remaining <= 0) {
+      clearInterval(timers[n].interval); timers[n].interval = null;
+      el.textContent = '⏰ TIME!'; el.style.color = '#c62828'; return;
+    }
+    timers[n].remaining--;
+    el.textContent = formatTime(timers[n].remaining);
+    if (timers[n].remaining <= 60) el.style.color = '#c62828';
+  }, 1000);
+}
+function pauseTimer(n) { clearInterval(timers[n].interval); timers[n].interval = null; }
+function resetTimer(n, v) {
+  pauseTimer(n);
+  timers[n].remaining = v;
+  const el = document.getElementById(n==='read'?'readTimer':'ansTimer');
+  el.textContent = formatTime(v); el.style.color = '';
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'results') updateScore();
+  });
+});
+</script>
+</body>
+</html>
